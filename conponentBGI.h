@@ -19,12 +19,18 @@ void (*F_R[FUNCTION_NUMBER])();
 function's menber decrptions:
 
 */
-
+/**********************************************/
 /*
 ID via screan
 ID must be a number under FUNCTION_NUMBER
 */
-short int R[SCREAN_H][SCREAN_W];
+short int R[SCREAN_H+1][SCREAN_W+1];
+void init_R()
+{
+	for(unsigned int i=0; i<=SCREAN_H;i++)
+	for(unsigned int j=0;j<=SCREAN_W;j++)
+	R[i][j]=0;
+};
 
 struct Button
 {
@@ -48,9 +54,18 @@ struct Button
 	void show()
 	{
 		setfillstyle(1, this->color);
-		bar(left, top, right, bottom);
+		bar(left, top, right, bottom);	
+		for (int y = top; y <= bottom; y++)
+		for (int x = left; x <= right; x++)
+			R[y][x] = ID;
+			
 		
-		
+	}
+	bool is_button_clicked()
+	{
+		int x, y;
+		getmouseclick(WM_LBUTTONDOWN, x, y);
+		if (R[y][x] == Button::ID) return true; else return false;
 	}
 };
 
