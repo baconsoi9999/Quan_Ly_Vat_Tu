@@ -1,9 +1,10 @@
-#include "GUI.h"
 
+
+	#include "GUI.h"
 #include <iostream>
 int main()
 {
-	initwindow(SCREAN_W, SCREAN_H);
+	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
 	main_frame();
 	cout <<"Loading complete!" <<endl; // Loading status
