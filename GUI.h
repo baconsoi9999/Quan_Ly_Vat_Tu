@@ -14,36 +14,43 @@ Tab_List Menu_Tab( Menu_Button.left, Menu_Button.bottom+1, Menu_Button.right, 2,
 void Show_Menu_List()
 {
 	Menu_Tab.show();
-	cout <<"Menu Open" <<endl;
-	int k=0;
-	while( k==0 )
+	bool flag= true;
+	while(flag)
 	{
-		k=Menu_Tab.is_content_click(0);
-//		if (k!=0) break;
-//		k=Menu_Tab.is_content_click(1);
-//		if (k!=0) break;
-//		k=Menu_Tab.is_content_click(2);
-//		if (k!=0) break;
+		int x=-1;
+		int y=-1;
+		getmouseclick(WM_LBUTTONDOWN,x,y);
+		clearmouseclick(WM_LBUTTONDOWN);
 		delay(1);
+		if ((x==-1)&&(y==-1)) continue;
+		cout <<x <<" :: " <<y <<endl;	// Delete this line when release!!!
+		short int s_f=R[y][x];
+		if((s_f==Menu_Button.ID)||(s_f==5)||(s_f==10)||(s_f==15))
+		{
+			
+			Menu_Tab.cancel();
+			if(s_f!=Menu_Button.ID) F_R[s_f]();
+			flag= false;
+		}	
 	}
-	cout <<k <<endl;
-	F_R[Menu_Tab.List_content_ID[k]]();
-	Menu_Tab.cancel();
+	
 }
 
 void Show_VT()
 {
-	cout <<"vat tu page open" <<endl;
+	cout <<"vat tu page open" <<endl; // Delete this line when release!!!
 }
 
 void Show_NV()
 {
-	cout <<"nhan vien page open" <<endl;
+	cout <<"nhan vien page open" <<endl; // Delete this line when release!!!
+
 }
 
 void Show_HD ()
 {
-	cout <<"hoa don page open" <<endl;
+	cout <<"hoa don page open" <<endl; // Delete this line when release!!!
+
 }
 	
 void main_frame()
@@ -68,11 +75,14 @@ void main_frame()
 	F_R[15]=Show_HD;
 	//
 	for(int i = 0; i<Menu_Tab.NUMBER_OF_LINE;i++)
-	cout<<"&*ct:::" <<Menu_Tab.List_content_ID[i] <<endl;
+	cout<<"&*ct:::" <<Menu_Tab.List_content_ID[i] <<endl; // Delete this line when release!!!
 	/*Adding Menu Button ID*/
 	F_R[Menu_Button.ID]=Show_Menu_List;
 	
 	Menu_Button.show(false);
+	settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+	setbkcolor(Menu_Button.color);
+	outtextxy(Menu_Button.left+20,(Menu_Button.bottom+Menu_Button.top - 16)/2,"MENU");
 
 	
 }

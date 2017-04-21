@@ -40,6 +40,7 @@ struct Button
 	int right;
 	int bottom;
 	int color;
+	
 	/*contructor*/
 	Button(int bid, int l, int t, int r, int b, int c)
 	{
@@ -53,13 +54,11 @@ struct Button
 
 	void show(bool click)
 	{
-		setfillstyle(1, click?color-7:color);
+		setfillstyle(1,color);
 		bar(left, top, right, bottom);	
 		for (int y = top; y <= bottom; y++)
 		for (int x = left; x <= right; x++)
-			R[y][x] = ID;
-			
-		
+			R[y][x] = ID;	
 	}
 	// useless method
 	bool is_button_clicked()
@@ -107,7 +106,7 @@ struct Tab_List
 	const short unsigned int CONTENT_SPACE = 15;
 	
 	/*set backup ID array*/
-	short int **B_R;
+	int B_R[1000][1000];
 	string *List_content_tile;
 	short int List_content_ID[20];
 	/*Set backup layer*/
@@ -123,41 +122,30 @@ struct Tab_List
 		color = c;
 		NUMBER_OF_LINE=n_o_l;
 		bottom =  t +  n_o_l*(font_size*8 + CONTENT_SPACE*2);
-		
-		/*back-up ID contructor*/
-		
-		B_R= new short int*[n_o_l*font_size*8];
-		for(int i= 0 ; i<n_o_l*font_size*8;i++)
-			B_R[i] = new short int [r-l+1];
-			
 		/*List content & ID contructor*/
 		List_content_tile = new string[n_o_l];
-//		List_content_ID = new short int [n_o_l];
+
 		
 	};
 	
 	void set_active()
 	{
 
-//		int y;
-//		int x;
-//		int y2;
-//		int x2;
-	
 		/*set backup ID */
 		bitmap = malloc(imagesize(left, top, right,bottom)); // set memory for image 
-	
 		getimage(left, top, right, bottom, bitmap); //save area scream.
-	
-	
 		/*save pixels ID*/
-//		for (y = top, y2 = 0; y <= bottom; y++, y2++)
-//		{
-//			for (x = left, x2 = 0; x <= right; x++, x2++)
-//			{
-//				
-//			}
-//		}
+		int y;
+		int x;
+		int y2;
+		int x2;
+		for (y = top, y2 = 0; y <= bottom; y++, y2++)
+		{
+			for (x = left, x2 = 0; x <= right; x++, x2++)
+			{
+				B_R[y2][x2]=R[y][x];
+			}
+		}
 		
 		for(int n= 0; n<NUMBER_OF_LINE; n++)
 			for(int i = top + n*(CONTENT_SPACE*2 + font_size*8+1); i< top + (n+1)*(CONTENT_SPACE*2 + font_size*8+1);i++)
@@ -192,37 +180,47 @@ struct Tab_List
 			outtextxy(Tab_List::left+ 5 , top+ CONTENT_SPACE + i*(font_size*8+ CONTENT_SPACE*2+1), covert);
 			
 		}
-		/*Warning ID content not able to use yet */
+		cout <<"Tap_List Open" <<endl <<"bottom: " << bottom <<endl; // Delete this line when release!!!
+		
 	}
+	
+	
 	void cancel()
 	{
-		int y;
-		int x;
-		int y2;
-		int x2;
-		/*set backup ID back */
+		
+		/*set Image back */
 		putimage(left, top, bitmap, 0);
 		free(bitmap);
-		for (y = top, y2 = 0; y <= bottom; y++, y2++)
+		/*set backup ID back */
+	
+		int y2=0;
+		int x2=0;
+		for (int y = top; y <= bottom; y++)
 		{
-			for (x = left, x2 = 0; x <= right; x++, x2++)
+			for (int x = left; x <= right; x++)
 			{
-//				R[y][x] = B_R[y2][x2];
+				R[y][x] = B_R[y2][x2];
+				x2++;
 			}
+			y2++;
 		}
-
+		cout <<"Tap_List Cancel" <<endl; // Delete this line when release!!!
 	};
-	int is_content_click(short unsigned int num)
+	
+	
+	int is_content_click()
 	{
 		int x, y;
 		getmouseclick(WM_LBUTTONDOWN, x, y);
 		clearmouseclick(WM_LBUTTONDOWN);
 	
+		for(int num = 0; num<NUMBER_OF_LINE;num++)
 		if (R[y][x] == List_content_ID[num]) 
 		{
-			cout <<x <<"::" <<y <<"-- ID = " <<R[y][x] <<endl ;
-			return num;	
-		} else return 0;		
+			cout <<x <<"::" <<y <<"-- ID = " <<R[y][x] <<endl ; // Delete this line when release!!!
+			return List_content_ID[num];	
+		} 	
+		return 0;
 	}
 	
 };

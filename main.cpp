@@ -6,8 +6,9 @@ int main()
 {
 	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
+	R[90][51]=10;
 	main_frame();
-	cout <<"Loading complete!" <<endl; // Loading status
+	cout <<"Loading complete!" <<endl; // Loading status // Delete this line when release!!!
 
 /* Example*/
 	while(1)
@@ -16,9 +17,9 @@ int main()
 		int y=-1;
 		getmouseclick(WM_LBUTTONDOWN,x,y);
 		clearmouseclick(WM_LBUTTONDOWN);
-		delay(10);
+		delay(1);
 		if ((x==-1)&&(y==-1)) continue;
-		cout <<x <<" :: " <<y <<endl;
+		cout <<x <<" :: " <<y <<endl; // Delete this line when release!!!
 		if(R[y][x]!=0)
 		{
 			F_R[R[y][x]]();
