@@ -1,12 +1,11 @@
 
-
 	#include "GUI.h"
 #include <iostream>
 int main()
 {
 	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
-	R[90][51]=10;
+	GUI_Init();
 	main_frame();
 	cout <<"Loading complete!" <<endl; // Loading status // Delete this line when release!!!
 

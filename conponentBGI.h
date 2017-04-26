@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdio.h>
-#include <graphics.h> 
+#include <winbgim.h> 
 #include <string>
 using namespace std;
 
@@ -159,10 +159,10 @@ struct Tab_List
 		
 		Tab_List::set_active();
 		
-		setfillstyle(1, color);
+		setfillstyle(1, color );
 		bar(left, top, right, bottom);
 		
-		setcolor(BLACK);
+		setcolor( 0 );//BLACK
 		rectangle(left, top, right-1, bottom-1);
 		for(int i=1; i<NUMBER_OF_LINE;i++)
 		{
@@ -170,7 +170,7 @@ struct Tab_List
 		}
 		
 		setbkcolor(color);
-		setcolor(BLACK);
+		setcolor( 0 ); //BLACK
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,font_size);
 		
 		for(int i = 0; i<NUMBER_OF_LINE; i++)
