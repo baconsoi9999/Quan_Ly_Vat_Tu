@@ -61,12 +61,7 @@ struct Button
 			R[y][x] = ID;	
 	}
 	// useless method
-	bool is_button_clicked()
-	{
-		int x, y;
-		getmouseclick(WM_LBUTTONDOWN, x, y);
-		if (R[y][x] == Button::ID) return true; else return false;
-	}
+//10:26-12/5/2017 Delete is_button_clicked() method
 };
 
 
@@ -101,14 +96,14 @@ struct Tab_List
 	int right;
 	int bottom;
 	unsigned short int font_size;
-	unsigned short int color;
+	int color;
 	unsigned short int NUMBER_OF_LINE;
 	const short unsigned int CONTENT_SPACE = 15;
 	
 	/*set backup ID array*/
 	int B_R[1000][1000];
 	string *List_content_tile;
-	short int List_content_ID[20];
+	short int *List_content_ID;
 	/*Set backup layer*/
 	void *bitmap; // get a ID memory pointer for layer. 
 
@@ -121,9 +116,10 @@ struct Tab_List
 		font_size= f_s;
 		color = c;
 		NUMBER_OF_LINE=n_o_l;
-		bottom =  t +  n_o_l*(font_size*8 + CONTENT_SPACE*2);
+		bottom =  t +  n_o_l*(font_size*8 + CONTENT_SPACE*2+1);
 		/*List content & ID contructor*/
 		List_content_tile = new string[n_o_l];
+		List_content_ID = new short int[n_o_l];
 
 		
 	};
@@ -149,7 +145,7 @@ struct Tab_List
 		
 		for(int n= 0; n<NUMBER_OF_LINE; n++)
 			for(int i = top + n*(CONTENT_SPACE*2 + font_size*8+1); i< top + (n+1)*(CONTENT_SPACE*2 + font_size*8+1);i++)
-				for(int j = Tab_List::left; j <= Tab_List::left+400 ; j++)
+				for(int j = Tab_List::left; j <= Tab_List::right ; j++)
 					R[i][j]=Tab_List::List_content_ID[n];
 			
 				
@@ -162,7 +158,7 @@ struct Tab_List
 		setfillstyle(1, color );
 		bar(left, top, right, bottom);
 		
-		setcolor( 0 );//BLACK
+		setcolor( COLOR(128,128,128));//BLACK
 		rectangle(left, top, right-1, bottom-1);
 		for(int i=1; i<NUMBER_OF_LINE;i++)
 		{
@@ -206,22 +202,8 @@ struct Tab_List
 		}
 		cout <<"Tap_List Cancel" <<endl; // Delete this line when release!!!
 	};
-	
-	
-	int is_content_click()
-	{
-		int x, y;
-		getmouseclick(WM_LBUTTONDOWN, x, y);
-		clearmouseclick(WM_LBUTTONDOWN);
-	
-		for(int num = 0; num<NUMBER_OF_LINE;num++)
-		if (R[y][x] == List_content_ID[num]) 
-		{
-			cout <<x <<"::" <<y <<"-- ID = " <<R[y][x] <<endl ; // Delete this line when release!!!
-			return List_content_ID[num];	
-		} 	
-		return 0;
-	}
+//10:26-12/5/2017 Delete is_content_click() method	
+
 	
 };
 struct Dialog
@@ -315,12 +297,6 @@ struct Dialog
 
 	};
 	
-	bool is_cancel_click()
-	{
-		int x, y;
-		getmouseclick(WM_LBUTTONDOWN, x, y);
-		clearmouseclick(WM_LBUTTONDOWN);
-		if (R[y][x] == -ID) return true; else return false; // 14/4/2017: ver 2.0.0.0
-	}
+//10:26-12/5/2017 Delete is_cancel_click() method
 };
 
