@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 #include <cstdlib>
 #include <stdio.h>
 #include <winbgim.h> 
@@ -13,7 +14,7 @@ const int APP_TOP = 30;
 const int APP_BOTTOM = SCREAN_H - 100;
 const int APP_RIGHT = SCREAN_W - 30;
 
-const int FUNCTION_NUMBER = 20;
+const int FUNCTION_NUMBER = 10000;
 void (*F_R[FUNCTION_NUMBER])();
 /*
 function's menber decrptions:
@@ -30,11 +31,20 @@ void init_R()
 	for(unsigned int i=0; i<=SCREAN_H;i++)
 	for(unsigned int j=0; j<=SCREAN_W;j++)
 	R[i][j]=0;
-};
-
+}
+void  notthing()
+{
+	cout << "Do not thing" <<endl;
+}
+//void newconsole()
+//{
+//CConsoleLogger another_console;
+//another_console.Create("This is the first console");
+//another_console.printf("WOW !!! COOLL !!! another console ???");
+//}
 struct Button
 {
-	int ID;
+	short int ID;
 	int left;
 	int top;
 	int right;
@@ -97,6 +107,8 @@ struct Tab_List
 	int bottom;
 	unsigned short int font_size;
 	int color;
+	int text_color = 0;
+	int line_color = 0;
 	unsigned short int NUMBER_OF_LINE;
 	const short unsigned int CONTENT_SPACE = 15;
 	
@@ -158,7 +170,7 @@ struct Tab_List
 		setfillstyle(1, color );
 		bar(left, top, right, bottom);
 		
-		setcolor( COLOR(128,128,128));//BLACK
+		setcolor(line_color);//BLACK
 		rectangle(left, top, right-1, bottom-1);
 		for(int i=1; i<NUMBER_OF_LINE;i++)
 		{
@@ -166,14 +178,15 @@ struct Tab_List
 		}
 		
 		setbkcolor(color);
-		setcolor( 0 ); //BLACK
+		setcolor( text_color ); //BLACK
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,font_size);
 		
 		for(int i = 0; i<NUMBER_OF_LINE; i++)
 		{
 			char *covert = new char [List_content_tile[i].length()];
 			for(int j=0;j<List_content_tile[i].length();j++) covert[j] =List_content_tile[i][j]; 
-			outtextxy(Tab_List::left+ 5 , top+ CONTENT_SPACE + i*(font_size*8+ CONTENT_SPACE*2+1), covert);
+			covert[List_content_tile[i].length()]='\0';
+			outtextxy(Tab_List::left+ 10 , top+ CONTENT_SPACE + i*(font_size*8+ CONTENT_SPACE*2+1), covert);
 			
 		}
 		cout <<"Tap_List Open" <<endl <<"bottom: " << bottom <<endl; // Delete this line when release!!!
@@ -208,57 +221,67 @@ struct Tab_List
 };
 struct Dialog
 {
-	int ID;
-	const int left = SCREAN_W / 2 - 200;
-	const int top = SCREAN_H / 2 - 100;
-	const int right = SCREAN_W / 2 + 200;
-	const int bottom = SCREAN_H / 2 + 100;
-	int color = 9;
-
+	short int ID;
+	int left;
+	int top;
+	int right;
+	int bottom;
+	int color = 15;
+	string tile;
 	/*cancel button*/
-	int c_b_left = right - 50;
-	int c_b_right = right;
-	int c_b_top = top;
-	int c_b_bottom = top + 25;
+	int c_b_left;
+	int c_b_right;
+	int c_b_top;
+	int c_b_bottom;
 
 	/*set backup ID array*/
-	short int B_R[201][401];
+	short int B_R[1000][2000];
 
 	/*Set backup layer*/
 	void *bitmap; // get a ID memory pointer for layer. 
-
-	void set_active()
+	
+	Dialog(int did, int l, int t, int r, int b, int c, string tl)
 	{
-
+		ID = did;
+		left = l;
+		top = t;
+		right = r;
+		bottom = b;
+		color = c;
+		tile = tl;
+		c_b_left = r - 50;
+		c_b_right = r;
+		c_b_top = t;
+		c_b_bottom = t + 25;
+	}
+	void set_active()
+	{		
+		/*set backup ID */
+		bitmap = malloc(imagesize(left, top, right,bottom)); // set memory for image 
+		getimage(left, top, right, bottom, bitmap); //save area scream.
+		/*save pixels ID*/
 		int y;
 		int x;
 		int y2;
 		int x2;
-		
-		/*set backup ID */
-		bitmap = malloc(imagesize(left, top, right, bottom)); // set memory for image 
-		getimage(left, top, right, bottom, bitmap); //save area scream.
-	
-		
-		/*save pixels ID*/
 		for (y = top, y2 = 0; y <= bottom; y++, y2++)
 		{
 			for (x = left, x2 = 0; x <= right; x++, x2++)
 			{
-				B_R[y2][x2] = R[y][x];
-				R[y][x] = ID;
+				B_R[y2][x2]=R[y][x];
+				R[y][x]=0;
 			}
-		};
-
+		}
+	cout<< "Debug::Diaglog::set_active::3::ok" <<endl;
 		/*set cancel ID*/
 		for (y = c_b_top, y2 = 0; y <= c_b_bottom; y++, y2++)
 		{
 			for (x = c_b_left, x2 = 0; x <= c_b_right; x++, x2++)
 			{
-				R[y][x]=-ID;
+				R[y][x]=ID;
 			}
 		};
-
+	cout<< "Debug::Diaglog::set_active::4::ok" <<endl;
 	};
 
 
@@ -266,16 +289,25 @@ struct Dialog
 	void show()
 	{
 		set_active();
-		setfillstyle(1, color);
+			setfillstyle(1, color);
 		bar(left, top, right, bottom);
+			setcolor(COLOR(128,128,128));
+		rectangle(left, top, right-1, bottom-1);
+			setfillstyle(1, COLOR(128,128,255));
+		bar(left, top, c_b_left, c_b_bottom);
 
 		/*cancel button*/
-		setfillstyle(1, 4);
+			setfillstyle(1, 4);
 		bar(c_b_left, c_b_top, c_b_right, c_b_bottom);
-		setcolor(15);
-		setbkcolor(4);
-		settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-		outtextxy(c_b_left + 22, top + 8, "X");
+			setcolor(15);
+			setbkcolor(COLOR(128,128,255));
+			settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+		char *covert = new char [tile.length()+1];
+			for(int j=0;j<tile.length();j++) covert[j] =tile[j]; 
+			covert[tile.length()]='\0';
+		outtextxy((left+c_b_left-tile.length()*16)/2, (top+c_b_bottom-16)/2, covert);
+			setbkcolor(4);
+		outtextxy(c_b_left + 17, c_b_top+4, "X");
 	};
 	/*cancel Dialog*/
 	void cancel()
@@ -299,4 +331,3 @@ struct Dialog
 	
 //10:26-12/5/2017 Delete is_cancel_click() method
 };
-

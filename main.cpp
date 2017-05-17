@@ -1,5 +1,7 @@
 
 	#include "GUI.h"
+	#include <windows.h>
+
 #include <iostream>
 int main()
 {
@@ -8,7 +10,7 @@ int main()
 	GUI_Init();
 	main_frame();
 	cout <<"Loading complete!" <<endl; // Loading status // Delete this line when release!!!
-
+	
 /* Example*/
 	while(1)
 	{
@@ -19,11 +21,7 @@ int main()
 		delay(1);
 		if ((x==-1)&&(y==-1)) continue;
 		cout <<x <<" :: " <<y <<endl; // Delete this line when release!!!
-		if(R[y][x]!=0)
-		{
-			F_R[R[y][x]]();
-			
-		}	
+			F_R[R[y][x]]();	
 	}
 	return 0;
 };
