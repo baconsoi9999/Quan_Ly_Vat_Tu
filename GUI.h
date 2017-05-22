@@ -1,4 +1,4 @@
-//	#include "Data/Vattu.h"
+	#include "Data/Vattu.h"
 //	#include "Data/Nhanvien.h"
 //	#include "Data/HOADON.h"
 //	#include "Data/CT_HOADON.H"
@@ -170,6 +170,7 @@ void Show_HD ()
 void Show_Dic()
 {
 	cout <<"dictionary show" <<endl;
+	showerrorbox("Sample of an Error Box");
 	Dic_Dialog.show();
 }
 void Cancel_Dic()
