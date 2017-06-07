@@ -7,13 +7,6 @@
 	#include <string>
 	#include <sstream>
 
-template <typename T>
-std::string genericToString(const T& t)
-{
-    std::ostringstream oss;
-    oss << t;
-    return oss.str();
-}
 	
 	using namespace std; // Just using for testing
 int CURRENT_STRAGE;	
@@ -135,13 +128,20 @@ void Show_VT()
 	/* collum tile */
 	setbkcolor(COLOR(204,194,155));
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
-	outtextxy(VT_List.left+1,Menu_Button.bottom+15,"STT Ma Vat tu        Ten Vat tu              Don vi tinh      SL ton");
+	outtextxy(VT_List.left+1,Menu_Button.bottom+15,"STT");
+	outtextxy(VT_List.left+65,Menu_Button.bottom+15,"Ma Vat tu");
+	outtextxy(VT_List.left+337,Menu_Button.bottom+15,"Ten Vat tu");
+	outtextxy(VT_List.left+721,Menu_Button.bottom+15,"Don vi tinh");
+	outtextxy(VT_List.left+993,Menu_Button.bottom+15,"SL ton");
 	/* collum line */
 	/*LINE 1*/ line(VT_List.left+57,Menu_Button.bottom+10,VT_List.left+57,VT_List.bottom-10);
 	/*LINE 2*/ line(VT_List.left+329,Menu_Button.bottom+10,VT_List.left+329,VT_List.bottom-10);
 	/*LINE 3*/ line(VT_List.left+713,Menu_Button.bottom+10,VT_List.left+713,VT_List.bottom-10);
 	/*LINE 4*/ line(VT_List.left+985,Menu_Button.bottom+10,VT_List.left+985,VT_List.bottom-10);
 	
+	setcolor(0);
+	setbkcolor(VT_List.color);
+	lietkeVattu(DataVattu,0,2,VT_List.left+57,VT_List.top,15);
 }
 
 
@@ -170,7 +170,6 @@ void Show_HD ()
 void Show_Dic()
 {
 	cout <<"dictionary show" <<endl;
-	showerrorbox("Sample of an Error Box");
 	Dic_Dialog.show();
 }
 void Cancel_Dic()

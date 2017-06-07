@@ -5,6 +5,9 @@
 #include <iostream>
 int main()
 {
+//	initdataVattu();
+	nhapVattu();
+//	inconsole();
 	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
 	GUI_Init();
