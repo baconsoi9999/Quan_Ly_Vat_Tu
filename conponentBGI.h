@@ -110,7 +110,7 @@ struct Tab_List
 	int text_color = 0;
 	int line_color = 0;
 	unsigned short int NUMBER_OF_LINE;
-	const short unsigned int CONTENT_SPACE = 15;
+	const short unsigned int CONTENT_SPACE = 10;
 	
 	/*set backup ID array*/
 	int B_R[1000][1000];

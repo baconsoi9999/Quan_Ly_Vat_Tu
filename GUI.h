@@ -24,7 +24,7 @@ LINE SPACE: 47
 NUMBER OF LINES: 4
 *****
 */
-Tab_List VT_List(APP_LEFT+5, Menu_Button.bottom+39+5, APP_RIGHT-5 ,1 ,COLOR(254,244,205), 10);
+Tab_List VT_List(APP_LEFT+5, Menu_Button.bottom+39+5, APP_RIGHT-5 ,2 ,COLOR(254,244,205), 10);
 /*
 FONT SIZE: 1
 LINE SPACE: 39
@@ -141,7 +141,7 @@ void Show_VT()
 	
 	setcolor(0);
 	setbkcolor(VT_List.color);
-	lietkeVattu(DataVattu,0,2,VT_List.left+57,VT_List.top,15);
+	lietkeVattu(DataVattu,0,2,VT_List.left+57,VT_List.top,10);
 }
 
 
