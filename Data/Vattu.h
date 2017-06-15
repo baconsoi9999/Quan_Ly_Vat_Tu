@@ -12,7 +12,8 @@ std::string genericToString(const T& t)
     oss << t;
     return oss.str();
 }
-
+/*file stream*/
+ofstream f1;//write stream
 
 /*MAIN STRUCT - begin*/
 struct Vattu{
@@ -43,21 +44,27 @@ void Insert(DsVattu &ds,int pos,Vattu vt ){
 }
 bool Find(DsVattu &ds, char p[100]){
 	for(int i = 0;i < ds.num; i++){
-		if(ds._vattu[i].MAVT == p) return true;
+		if(strcmp(ds._vattu[i].MAVT , p)==0) return true;
 	}
 	return false;
 } 
 bool FindandInsert(DsVattu &ds,Vattu vt){
 	if(Find(ds ,vt.MAVT)) return false;
-	for(int i = 0; i < ds.num; i++){
-		bool flag = true;
-		for(int j=0; j<100||j!='\0';j++)
-		if(vt.TENVT[j]!=ds._vattu[i].TENVT[j]){flag=false;break;}
-		if(flag) {
-			Insert(ds,i,vt);
+//	for(int i = 0; i < ds.num; i++){
+//		bool flag = true;
+	//	for(int j=0; j<100||j!='\0';j++)
+//		if(strcmp(vt.TENVT[j],ds._vattu[i].TENVT[j])!=0){flag=false;break;}
+//		if(flag) {
+			for(int i=0;i<ds.num;i++){
+				if(strcmp(ds._vattu[i].MAVT , vt.MAVT)>0){
+					Insert(ds,i,vt);
+					return true;
+				}
+			}
+			Insert(ds,ds.num,vt);
 			return true;
-		}
-	}
+		//}
+	
 	cout<<"---ds.num---"<<ds.num<<endl;
 	Insert(ds,ds.num,vt);
 	return true;
@@ -88,8 +95,6 @@ void nhapVattu()
 	cout <<">>input n: ";
 	cin >>n;
 //	DataVattu.num+=n;
-	ofstream f1;
-	f1.open("Data/DataVattu.data",ios::binary );
 
 	for(int i =0 ;i<n;i++)
 	{
@@ -97,8 +102,7 @@ void nhapVattu()
 		// kiemtravt
 		FindandInsert(DataVattu,vt);
 	}
-	f1.write((char*)&DataVattu, sizeof(DataVattu));
-	f1.close();
+	
 }
 
 void deleteVattu(int n,DsVattu &ds){
@@ -109,7 +113,7 @@ void deleteVattu(int n,DsVattu &ds){
 	ds.num --;
 }
 
-void printVattu(Vattu Va,int x,int y)
+void printVattu(Vattu Va,int x,int y,unsigned short int c_line[])
 {
 //	int str_l=Va.MAVT.length();
 //	char* covert =new char[str_l+1];
@@ -137,9 +141,9 @@ void printVattu(Vattu Va,int x,int y)
 //	covert[str_l]='\0';
 //	outtextxy(x+993,y,covert);
 	
-		outtextxy(x+10,y,Va.MAVT);
-		outtextxy(x+282,y,Va.TENVT);
-		outtextxy(x+666,y,Va.DVT);
+		outtextxy(x+c_line[0]+10,y,Va.MAVT);
+		outtextxy(x+c_line[1]+10,y,Va.TENVT);
+		outtextxy(x+c_line[2]+10,y,Va.DVT);
 	
 		string num= genericToString(Va.soluongton);
 		int str_l=num.length();
@@ -147,18 +151,24 @@ void printVattu(Vattu Va,int x,int y)
 		for(int i = 0; i <str_l;i++)
 		covert[i]=num[i];
 		covert[str_l]='\0';
-		outtextxy(x+938,y,covert);
+		outtextxy(x+c_line[3]+10,y,covert);
 }
 void inconsole(){
 	for(int i = 0;i<DataVattu.num;i++){
 		cout<<DataVattu._vattu[i].MAVT<<endl;
 	}
 }
-void lietkeVattu(DsVattu ds,int batdau, int ketthuc,int x,int y,int SPACE)
+void lietkeVattu(DsVattu ds,int batdau, int ketthuc,int x,int y,int SPACE,unsigned short int c_line[])
 {
 	//eror	sort(ds._vattu,ds._vattu + ds.num ); //compare missing
 	for(int i = batdau ;i <= ketthuc ; i++)
 	{
-		printVattu(ds._vattu[i],x,SPACE+y+(i-batdau)*(16+ SPACE*2 + 1));	// liet ke theo trang 
+		printVattu(ds._vattu[i],x,SPACE+y+(i-batdau)*(16+ SPACE*2 + 1),c_line);	// liet ke theo trang 
 	}
+}
+void xoa1vt()
+{
+	int n;
+	cout <<"nhap STT vat tu: ";
+	deleteVattu(n,DataVattu);
 }

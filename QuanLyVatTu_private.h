@@ -5,19 +5,19 @@
 #define QUANLYVATTU_PRIVATE_H
 
 /* VERSION DEFINITIONS */
-#define VER_STRING	"2.0.2.374"
+#define VER_STRING	"2.0.2.890"
 #define VER_MAJOR	2
 #define VER_MINOR	0
 #define VER_RELEASE	2
-#define VER_BUILD	374
+#define VER_BUILD	890
 #define COMPANY_NAME	""
-#define FILE_VERSION	"2.0.2.374"
+#define FILE_VERSION	"2.0.2.890"
 #define FILE_DESCRIPTION	"Developed using the Dev-C++ IDE"
 #define INTERNAL_NAME	""
 #define LEGAL_COPYRIGHT	""
 #define LEGAL_TRADEMARKS	""
 #define ORIGINAL_FILENAME	""
 #define PRODUCT_NAME	""
-#define PRODUCT_VERSION	"2.0.2.374"
+#define PRODUCT_VERSION	"2.0.2.890"
 
 #endif /*QUANLYVATTU_PRIVATE_H*/
