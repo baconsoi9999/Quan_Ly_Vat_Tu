@@ -35,9 +35,9 @@ char* VT_Book_l_tile[10]={"1\0","2\0","3\0","4\0","5\0","6\0","7\0","8\0","9\0",
 //Tab_List VT_List(APP_LEFT+5, Menu_Button.bottom+39+5, APP_RIGHT-5 ,2 ,COLOR(254,244,205), 10,l_tile);
 Book VT_Book(APP_LEFT+5, Menu_Button.bottom+5, APP_RIGHT-5 ,2 ,COLOR(234,244,253),COLOR(83,174,242), 10,5,VT_Book_c_line,VT_Book_c_tile,VT_Book_l_tile);
 //new VAT TU function
-unsigned short int VT_new_c_line[3]={300,713,985};
+unsigned short int VT_new_c_line[3]={278,642,914};
 char* VT_new_c_tile[4]={"Ma Vat tu\0","Ten Vat tu\0", "don vi tinh\0", "SL ton\0"};
-Array_Table VT_new(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-80, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(83,174,242), 4, VT_new_c_line, VT_new_c_tile);
+Array_Table VT_new(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0), 4, VT_new_c_line, VT_new_c_tile);
 /*
 FONT SIZE: 1
 LINE SPACE: 39
@@ -111,6 +111,7 @@ void Show_Menu_List()
 		||(s_f==Menu_Tab.List_content_ID[1])
 		||(s_f==Menu_Tab.List_content_ID[2])
 		||(s_f==Menu_Tab.List_content_ID[3])
+		||(s_f==Menu_Tab.List_content_ID[4])
 		)
 		{
 			Menu_Tab.cancel();
@@ -144,7 +145,7 @@ void new_TVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerCode(VT_new.List_content[1],21,VT_new.left+VT_new.column[0]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[1]);
+	ScannerString(VT_new.List_content[1],21,VT_new.left+VT_new.column[0]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[1]);
 }
 void new_DVTVT()
 {
@@ -152,7 +153,7 @@ void new_DVTVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerCode(VT_new.List_content[2],16,VT_new.left+VT_new.column[1]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[2]);
+	ScannerString(VT_new.List_content[2],16,VT_new.left+VT_new.column[1]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[2]);
 }
 void new_SLTVT()
 {
@@ -160,13 +161,26 @@ void new_SLTVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerCode(VT_new.List_content[3],9,VT_new.left+VT_new.column[2]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[3]);
+	ScannerNum(VT_new.List_content[3],9,VT_new.left+VT_new.column[2]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[3]);
 }
 void Show_VT_new()
 {
 	VT_new.show();
 }
-
+void next_VT_Book()
+{
+	VT_Book.next_PAGE();
+	lietkeVattu(DataVattu,
+	    (VT_Book.CURENT_PAGE-1)*10,min((VT_Book.CURENT_PAGE*10-1),(DataVattu.num-1)),
+    	VT_Book.left,VT_Book.top_main,10,VT_Book_c_line);
+}
+void prev_VT_Book()
+{
+	VT_Book.prev_PAGE();
+	lietkeVattu(DataVattu,
+	    (VT_Book.CURENT_PAGE-1)*10,min((VT_Book.CURENT_PAGE*10-1),(DataVattu.num-1)),
+    	VT_Book.left,VT_Book.top_main,10,VT_Book_c_line);
+}
 void Show_VT()
 {
 	cout <<"vat tu page open" <<endl; // Delete this line when release!!!
@@ -183,7 +197,7 @@ void Show_VT()
 	setcolor(0);
 	setbkcolor(VT_Book.color);
 	lietkeVattu(DataVattu,
-	    (VT_Book.CURENT_PAGE-1)*10,((VT_Book.CURENT_PAGE*10-1)<(VT_Book.TOTAL_PAGE-1)?(VT_Book.CURENT_PAGE*10-1):(VT_Book.TOTAL_PAGE-1)),
+	    (VT_Book.CURENT_PAGE-1)*10,min((VT_Book.CURENT_PAGE*10-1),(DataVattu.num-1)),
     	VT_Book.left,VT_Book.top_main,10,VT_Book_c_line);
 }
 
@@ -258,10 +272,13 @@ void GUI_Init()
 	/*main menu init*/
 	Menu_Tab.line_color = COLOR(200,200,200);
 	/*Vat Tu init*/
-	VT_Book.TOTAL_PAGE= DataVattu.num;
+	VT_Book.prev_ID=111;
+	F_R[VT_Book.prev_ID] = prev_VT_Book;
+	VT_Book.next_ID=112;
+	F_R[VT_Book.next_ID] = next_VT_Book;
+	VT_Book.TOTAL_PAGE= DataVattu.num/10+(DataVattu.num%10!=0);
 	VT_Book.text_color = 0;
 	VT_Book.line_color = COLOR(128,128,128);
 	/*Tra Cuu Vat Tu init*/
-	F_R[Dic_Dialog.ID]=Show_Dic;
 	cout <<"GUI init complete!\n";
 }		

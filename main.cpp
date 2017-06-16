@@ -7,7 +7,7 @@
 int main()
 {
 	initdataVattu();
-//	nhapVattu();
+	nhapVattu();
 	inconsole();
 	initwindow( SCREAN_W, SCREAN_H);
 	cout <<"Loading 1\n";

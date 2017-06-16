@@ -160,6 +160,8 @@ void inconsole(){
 }
 void lietkeVattu(DsVattu ds,int batdau, int ketthuc,int x,int y,int SPACE,unsigned short int c_line[])
 {
+	setbkcolor(getpixel(x+1,y+1));
+	setcolor(0);
 	//eror	sort(ds._vattu,ds._vattu + ds.num ); //compare missing
 	for(int i = batdau ;i <= ketthuc ; i++)
 	{

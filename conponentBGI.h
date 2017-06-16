@@ -61,6 +61,63 @@ char* Int_to_Char (int x)
 }
 const int ENTER = 13;
 const int BACKSPACE = 8;
+
+void ScannerString(char s[],int max, int px ,int py,int ID)
+{
+	int mx=-1;
+	int my=-1;
+	unsigned int l = strlen(s);
+	outtextxy(px,py,s);
+	while(1)
+	{
+		getmouseclick(WM_LBUTTONDOWN,mx,my);
+		clearmouseclick(WM_LBUTTONDOWN);
+		delay(1);
+		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
+		break;
+		if(kbhit())
+		{
+				
+			char c = getch();
+			
+			if(l<max)
+			{
+				if(c>='a' && c<='z')
+				{
+					s[l] = c;
+					l++;
+				}
+				if(c>='A' && c<='Z')
+				{
+				s[l] = c;
+					l++;
+				}
+				if(c>='0' && c<='9')
+				{
+					s[l] = c;
+					l++;
+				}
+				if(l>0) if(s[l-1]!=' ' && c == ' ')
+				{
+					s[l] = c;
+					l++;
+				}
+			}
+			if(c == ENTER) break;
+			if(c == BACKSPACE&&l>0)
+			{
+				s[l-1] =' ';
+				l--;
+			}
+//			cout <<s<<endl;
+			printf("%s\n",s);
+			outtextxy(px,py,s);	
+			if(s[l]==' ') s[l]=NULL;
+		}
+	}
+	cout<<"da ket thu\n";
+	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
+}
 void ScannerCode(char s[],int max, int px ,int py,int ID)
 {
 	int mx=-1;
@@ -112,7 +169,48 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 	cout<<"da ket thu\n";
 	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
 }
-
+void ScannerNum(char s[],int max, int px ,int py,int ID)
+{
+	int mx=-1;
+	int my=-1;
+	unsigned int l = strlen(s);
+	outtextxy(px,py,s);
+	while(1)
+	{
+		getmouseclick(WM_LBUTTONDOWN,mx,my);
+		clearmouseclick(WM_LBUTTONDOWN);
+		delay(1);
+		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
+		break;
+		
+		if(kbhit())
+		{
+				
+			char c = getch();
+			
+			if(l<max)
+			{
+				
+				if(c>='0' && c<='9')
+				{
+					s[l] = c;
+					l++;
+				}
+			}
+			if(c == ENTER) break;
+			if(c == BACKSPACE&&l>0){
+				s[l-1] =' ';
+				l--;
+			}
+//			cout <<s<<endl;
+			printf("%s\n",s);
+			outtextxy(px,py,s);	
+			if(s[l]==' ') s[l]=NULL;
+		}
+	}
+	cout<<"da ket thu\n";
+	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
+}
 struct Button
 {
 	short int ID;
@@ -369,7 +467,7 @@ struct Dialog
 		setcolor(15);
 		setbkcolor(COLOR(83,174,242));
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-		outtextxy((left+c_b_left-strlen(tile))/2, (top+c_b_bottom-16)/2, tile);
+		outtextxy((left+c_b_left-strlen(tile)*textheight("S"))/2, (top+c_b_bottom-16)/2, tile);
 		/*cancel button*/
 			setfillstyle(1, 4);
 		bar(c_b_left, c_b_top, c_b_right, c_b_bottom);
@@ -401,11 +499,12 @@ struct Dialog
 };
 struct Book
 {
-	int left;
-	int top,top_main;
-	int right;
-	int bottom;
+	int left,prev_left,next_left;
+	int top,top_main,prev_top,next_top;
+	int right,prev_right,next_right;
+	int bottom,prev_bottom,next_bottom;
 	unsigned short int font_size;
+	unsigned short int prev_ID, next_ID;
 	int color,t_color;
 	int text_color = 0;
 	int line_color = 0;
@@ -415,7 +514,7 @@ struct Book
 	unsigned short int* column;
 	/*Pages set*/
 	unsigned short int CURENT_PAGE=1;
-	unsigned short int TOTAL_PAGE;
+	unsigned short int TOTAL_PAGE=1;
 	/*set backup ID array*/
 
 	char** List_content_tile;
@@ -444,6 +543,15 @@ struct Book
 		List_content_tile = l_tile;
 		List_content_ID = new unsigned short int[n_o_l];	
 		top_main=t+(font_size*8 + CONTENT_SPACE*2+1);
+		prev_left = l+2;
+		prev_top = bottom-(font_size*8 + CONTENT_SPACE*2)+1;
+		prev_right = prev_left + font_size*8*6;
+		prev_bottom = bottom - 2;
+		
+		next_right = r-2;
+		next_top = bottom-(font_size*8 + CONTENT_SPACE*2)+1;
+		next_left = next_right - font_size*8*6;
+		next_bottom = bottom - 2;
 		
 	};
 	void set_active()
@@ -452,7 +560,15 @@ struct Book
 			for(int i = top + (n+1)*(CONTENT_SPACE*2 + font_size*8+1); i< top + (n+2)*(CONTENT_SPACE*2 + font_size*8+1);i++)
 				for(int j = left; j <= right ; j++)
 					R[i][j]=List_content_ID[n];
-					
+		if(CURENT_PAGE!=1)
+			for(int i = prev_top; i<=prev_bottom;i++)
+				for(int j = prev_left; j<=prev_right;j++)
+					R[i][j] = prev_ID;
+		if(CURENT_PAGE!=TOTAL_PAGE)
+			for(int i = next_top; i<= next_bottom;i++)
+				for(int j = next_left; j<= next_right;j++)
+					R[i][j] = next_ID;
+								
 	}
 	void show()
 	{
@@ -491,7 +607,39 @@ struct Book
 		}
 		setcolor(line_color);//BLACK
 		rectangle(left, top, right-1, bottom-1);
+		if(CURENT_PAGE!=1){
+			setfillstyle(1,t_color);
+			setcolor(15);
+			bar(prev_left,prev_top,prev_right,prev_bottom);
+			outtextxy((prev_left+prev_right-4*font_size*8)/2,(prev_top+prev_bottom-font_size*8)/2,"PREV");
+		}
+		if(CURENT_PAGE!=TOTAL_PAGE)
+		{
+			setfillstyle(1,t_color);
+			setcolor(15);
+			bar(next_left,next_top,next_right,next_bottom);
+			outtextxy((next_left+next_right-4*font_size*8)/2,(next_top+next_bottom-font_size*8)/2,"NEXT");
+		}
+		setbkcolor(color);
+		setcolor(4);
+		outtextxy((left+right-textheight("/"))/2,bottom - CONTENT_SPACE - textheight("/"),"/");
+		char s_buff[5];
+		itoa(TOTAL_PAGE,s_buff,10);
+		outtextxy((left+right+textheight("/"))/2,bottom - CONTENT_SPACE - textheight("/"),s_buff);
+		itoa(CURENT_PAGE,s_buff,10);
+		outtextxy((left+right-textheight("/"))/2 -textheight("/")*strlen(s_buff),bottom - CONTENT_SPACE - textheight("/") ,s_buff);
+		
 		cout <<"Book Open" <<endl <<"bottom: " << bottom <<endl; // Delete this line when release!!!	
+	}
+	void next_PAGE()
+	{
+		CURENT_PAGE++;
+		show();
+	}
+	void prev_PAGE()
+	{
+		CURENT_PAGE--;
+		show();
 	}
 };
 struct Array_Table
