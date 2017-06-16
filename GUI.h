@@ -14,12 +14,15 @@ int CURRENT_STRAGE;
 unsigned int VT_ID=100,NV_ID=200,HD_ID=300;
 Frame m_f(APP_LEFT, APP_TOP, APP_RIGHT, APP_BOTTOM,COLOR(255,255,255));
 
-Button Exit_App(1,APP_RIGHT-58,APP_TOP,APP_RIGHT,APP_TOP+29,4," X ");
+Panel active_bar(APP_LEFT,APP_BOTTOM-130,APP_RIGHT,APP_BOTTOM);
 
-Button Menu_Button(2,APP_LEFT, APP_TOP, APP_LEFT+ 399, APP_TOP+39, COLOR(0,0,255),"MENU");
+Button Exit_App(1,APP_RIGHT-58,APP_TOP,APP_RIGHT,APP_TOP+29,4,2," X ");
 
-Button New_Button(0, Menu_Button.right+10, APP_TOP,Menu_Button.right+210, APP_TOP+39, COLOR(0,255,0),"  NEW\0");//change ID not 0
+Button Menu_Button(2,APP_LEFT, APP_TOP, APP_LEFT+ 399, APP_TOP+39, COLOR(0,0,255),3,"MENU");
 
+Button New_Button(0, Menu_Button.right+10, APP_TOP,Menu_Button.right+160, APP_TOP+39, COLOR(0,255,0),3," NEW\0");//change ID not 0
+
+Button Save_Button(0,New_Button.right +5, APP_TOP, New_Button.right +165, APP_TOP+39, COLOR(0,0,220),3," SAVE\0");
 
 char*Menu_Content_Tile[5]={"Trang chu\0","Quan ly vat tu\0","Quan ly nhan vien\0","Quan ly hoa don\0","Tra cuu ma"};
 Tab_List Menu_Tab( Menu_Button.left, Menu_Button.bottom, Menu_Button.right,2, 15 , 5, Menu_Content_Tile);	
@@ -38,6 +41,8 @@ Book VT_Book(APP_LEFT+5, Menu_Button.bottom+5, APP_RIGHT-5 ,2 ,COLOR(234,244,253
 unsigned short int VT_new_c_line[3]={278,642,914};
 char* VT_new_c_tile[4]={"Ma Vat tu\0","Ten Vat tu\0", "don vi tinh\0", "SL ton\0"};
 Array_Table VT_new(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0), 4, VT_new_c_line, VT_new_c_tile);
+Button VT_new_save(125,APP_RIGHT-95, APP_BOTTOM-120,APP_RIGHT-5,APP_BOTTOM-82,COLOR(0,0,220),2," OK\0");
+Button VT_new_cancel(126,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,COLOR(0,0,220),2," HUY\0");
 /*
 FONT SIZE: 1
 LINE SPACE: 39
@@ -78,9 +83,7 @@ void main_frame()
 	bar(m_f.left,m_f.bottom-130 , m_f.right, m_f.bottom);
 	
 	for(int i = 0; i<Menu_Tab.NUMBER_OF_LINE;i++)		  // Delete this line when release!!!
-	cout<<"&*ct:::" <<Menu_Tab.List_content_ID[i] <<endl; // Delete this line when release!!!
-	
-	
+	cout<<"&*ct:::" <<Menu_Tab.List_content_ID[i] <<endl; // Delete this line when release!!!	
 	settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
 	setbkcolor(Menu_Button.color);
 	setcolor(15);
@@ -163,8 +166,48 @@ void new_SLTVT()
 	clearStream();
 	ScannerNum(VT_new.List_content[3],9,VT_new.left+VT_new.column[2]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[3]);
 }
+void cancel_VT_new()
+{
+	VT_new.free_Table();
+	VT_new.cancel();
+	active_bar.cancel();
+	
+}
+void save_VT_new()
+{
+	vattu_error error;
+	Vattu pre_add;
+	error = Check_VT(pre_add,VT_new.List_content[0],VT_new.List_content[1],VT_new.List_content[2],VT_new.List_content[3]);
+	if(error.check)
+	{
+	FindandInsert(DataVattu,pre_add);
+	cancel_VT_new();
+	} 
+	else 
+	{
+		setbkcolor(getpixel(VT_new.left,VT_new.bottom+5));
+		setcolor(4);
+		settextstyle(DEFAULT_FONT, HORIZ_DIR,1);
+		setcolor(error.error_color[0]);
+		outtextxy(VT_new.left,VT_new.bottom+5,error.error_st[0]);
+		for(int i = 1; i<4;i++)
+		{
+			setcolor(error.error_color[i]);
+			outtextxy(VT_new.left+VT_new_c_line[i-1],VT_new.bottom+5,error.error_st[i]);
+		}
+	}
+	
+	
+}
+
 void Show_VT_new()
 {
+	if(active_bar.is_active) active_bar.cancel();
+	if(VT_new.is_active) VT_new.cancel();
+	active_bar.Show();
+	VT_new.free_Table();
+	VT_new_save.show();//button
+	VT_new_cancel.show();//button
 	VT_new.show();
 }
 void next_VT_Book()
@@ -192,7 +235,8 @@ void Show_VT()
 	cout <<"vat tu page open" <<endl; // Delete this line when release!!!
 	New_Button.ID=CURRENT_STRAGE+20;
 	New_Button.show();
-	
+	Save_Button.ID=CURRENT_STRAGE+99;
+	Save_Button.show();
 	VT_Book.show();
 	setcolor(0);
 	setbkcolor(VT_Book.color);
@@ -258,7 +302,8 @@ void GUI_Init()
 	F_R[VT_new.List_content_ID[2]]=new_DVTVT;
 	VT_new.List_content_ID[3]=VT_ID+24;
 	F_R[VT_new.List_content_ID[3]]=new_SLTVT;
-	
+	F_R[VT_new_save.ID]=save_VT_new;
+	F_R[VT_new_cancel.ID]=cancel_VT_new;
 	/*Nhan vien ID*/
 	Menu_Tab.List_content_ID[2] = NV_ID;
 	F_R[NV_ID]=Show_NV;
@@ -272,6 +317,7 @@ void GUI_Init()
 	/*main menu init*/
 	Menu_Tab.line_color = COLOR(200,200,200);
 	/*Vat Tu init*/
+	F_R[VT_ID+99] = save_Vattu;
 	VT_Book.prev_ID=111;
 	F_R[VT_Book.prev_ID] = prev_VT_Book;
 	VT_Book.next_ID=112;

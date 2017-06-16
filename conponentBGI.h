@@ -76,10 +76,8 @@ void ScannerString(char s[],int max, int px ,int py,int ID)
 		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
 		break;
 		if(kbhit())
-		{
-				
-			char c = getch();
-			
+		{			
+		char c = getch();
 			if(l<max)
 			{
 				if(c>='a' && c<='z')
@@ -113,9 +111,9 @@ void ScannerString(char s[],int max, int px ,int py,int ID)
 			printf("%s\n",s);
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;
+		
 		}
 	}
-	cout<<"da ket thu\n";
 	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
 }
 void ScannerCode(char s[],int max, int px ,int py,int ID)
@@ -219,9 +217,10 @@ struct Button
 	int right;
 	int bottom;
 	int color;
+	int font_size;
 	char * tile;
 	/*contructor*/
-	Button(int bid, int l, int t, int r, int b, int c,char*b_t)
+	Button(int bid, int l, int t, int r, int b, int c,int f_s,char*b_t)
 	{
 		ID = bid;
 		left = l;
@@ -229,6 +228,7 @@ struct Button
 		right = r;
 		bottom = b;
 		color = c;
+		font_size = f_s;
 		tile = b_t;
 	};
 
@@ -237,7 +237,9 @@ struct Button
 		setfillstyle(1,color);
 		bar(left, top, right, bottom);
 		setbkcolor(color);
-		outtextxy(left+5,(top+bottom- textheight("S"))/2,tile);	
+		setcolor(15);
+		settextstyle(DEFAULT_FONT, HORIZ_DIR,font_size);
+		outtextxy(left+5,(top+bottom- 8*font_size)/2,tile);	
 		for (int y = top; y <= bottom; y++)
 		for (int x = left; x <= right; x++)
 			R[y][x] = ID;	
@@ -266,6 +268,69 @@ struct Frame
 	{
 		setfillstyle(1, color);
 		bar(left, top, right, bottom);
+	};
+};
+struct Panel
+{
+	bool is_active = false;
+	int left;
+	int top;
+	int right;
+	int bottom;
+	int B_R[SCREAN_H][SCREAN_W];
+	void *bitmap; // get a ID memory pointer for layer. 
+	/*contructor*/
+	Panel(int l, int t, int r, int b)
+	{
+		left = l;
+		top = t;
+		right = r;
+		bottom = b;
+	};
+	set_active()
+	{
+		is_active = true;
+		/*set backup ID */
+		bitmap = malloc(imagesize(left, top, right,bottom)); // set memory for image 
+		getimage(Panel::left,Panel::top,Panel::right, Panel::bottom, bitmap); //save area scream.
+		/*save pixels ID*/
+		int y;
+		int x;
+		int y2;
+		int x2;
+		for (y = top, y2 = 0; y <= bottom; y++, y2++)
+		{
+			for (x = left, x2 = 0; x <= right; x++, x2++)
+			{
+				B_R[y2][x2]=R[y][x];
+				R[y][x]=0;
+			}
+		}
+	};
+	void Show()
+	{
+	if(is_active == false)set_active();
+	};
+	void cancel()
+	{
+		is_active = false;
+			/*set Image back */
+		putimage(Panel::left, Panel::top, bitmap, 0);
+		free(bitmap);
+		/*set backup ID back */
+	
+		int y2=0;
+		int x2=0;
+		for (int y = Panel::top; y <= Panel::bottom; y++)
+		{
+			for (int x = Panel::left; x <= Panel::right; x++)
+			{
+				R[y][x] = B_R[y2][x2];
+				x2++;
+			}
+			y2++;
+		}
+		cout <<"Tap_List Cancel" <<endl; // Delete this line when release!!!
 	};
 };
 
@@ -644,6 +709,7 @@ struct Book
 };
 struct Array_Table
 {
+	bool is_active = false;
 	int left;
 	int top,top_main;
 	int right;
@@ -659,7 +725,7 @@ struct Array_Table
 	unsigned short int *List_content_ID;
 	char** List_content;
 	int B_R[SCREAN_H][SCREAN_W];
-	void *bitmap;
+	
 	Array_Table(int l, int t, int r,int b, int f_s, int c, int t_c, int n_o_c, unsigned short int col[], char* c_tile[])
 	{
 		left = l;
@@ -680,20 +746,14 @@ struct Array_Table
 		
 		
 	}
-	free_Table()
+	void free_Table()
 	{
-		for(int i = 0; i<NUMBER_OF_COLUMN; i++)	List_content[i]="";
-		setfillstyle(1, color );
-		bar(left+1, top_main+1, column[0]-1, bottom-1);
-		for(int i = 1; i<NUMBER_OF_COLUMN-1; i++) bar(left+column[i]+1, top_main+1, column[i+1]-1, bottom-1);
-		bar(column[NUMBER_OF_COLUMN-2]+1,top_main+1,left-1, bottom-1);	
+		for(int i = 0; i<NUMBER_OF_COLUMN; i++)	List_content[i]=(char*) calloc(100,sizeof(char*));
 	}
 	void set_active()
 	{
+		is_active = true;
 		/*set backup ID */
-		bitmap = malloc(imagesize(left, top, right,bottom)); // set memory for image 
-		getimage(left, top, right, bottom, bitmap); //save area scream.
-		/*save pixels ID*/
 		int y;
 		int x;
 		int y2;
@@ -723,9 +783,8 @@ struct Array_Table
 	void show()
 	{
 		
-		set_active();
-		for(int i = 0;i<NUMBER_OF_COLUMN;i++)
-		cout<<"Array Table ID::"<<i <<"::::column::"<<column[i]<<endl;
+		if(is_active==false)set_active();
+	
 		setfillstyle(1, color );
 		bar(left, top_main, right, bottom);
 		setfillstyle(1,t_color);
@@ -743,10 +802,7 @@ struct Array_Table
 	}
 	void cancel()
 	{
-		
-		/*set Image back */
-		putimage(left, top, bitmap, 0);
-		free(bitmap);
+		is_active = false;
 		/*set backup ID back */
 	
 		int y2=0;
