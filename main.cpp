@@ -1,4 +1,3 @@
-
 	#include "GUI.h"
 	#include <windows.h>
 
@@ -7,6 +6,8 @@
 int main()
 {
 	initdataVattu();
+	initdataNhanvien();
+	Nhapnhieunhanvien();
 	inconsole();
 	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
@@ -29,5 +30,6 @@ int main()
 			F_R[R[y][x]]();	
 	}
 	save_Vattu();
+	save_Nhanvien();
 	return 0;
 };

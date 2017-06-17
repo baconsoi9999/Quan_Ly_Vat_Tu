@@ -114,7 +114,10 @@ void ScannerString(char s[],int max, int px ,int py,int ID)
 		
 		}
 	}
-	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
+	if((mx!=-1)&&(my!=-1)) {
+	cout <<mx <<" :: " <<my <<":::"<<R[my][mx] <<endl; // Delete this line when release!!!
+	F_R[R[my][mx]]();
+	}
 }
 void ScannerCode(char s[],int max, int px ,int py,int ID)
 {
@@ -160,6 +163,7 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 			}
 //			cout <<s<<endl;
 			printf("%s\n",s);
+			cout<<"l:::"<<l<<endl;
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;
 		}
@@ -583,8 +587,10 @@ struct Book
 	/*set backup ID array*/
 
 	char** List_content_tile;
+	char List_content[20][100];
 	char** Column_tile;
 	unsigned short int *List_content_ID;
+	
 	/*Set backup layer*/
 
 
@@ -619,6 +625,14 @@ struct Book
 		next_bottom = bottom - 2;
 		
 	};
+	void show_Content()
+	{
+		for(int i = 0; i<NUMBER_OF_LINE; i++)
+		{
+			outtextxy(left+ column[0] +5 , top+ CONTENT_SPACE + (i+1)*(font_size*8+ CONTENT_SPACE*2+1), List_content[i]);
+		}
+	}
+	
 	void set_active()
 	{		
 		for(int n= 0; n<NUMBER_OF_LINE; n++)
@@ -723,7 +737,7 @@ struct Array_Table
 	unsigned short int NUMBER_OF_COLUMN;
 	char** Column_tile;
 	unsigned short int *List_content_ID;
-	char** List_content;
+	char List_content[20][100];
 	int B_R[SCREAN_H][SCREAN_W];
 	
 	Array_Table(int l, int t, int r,int b, int f_s, int c, int t_c, int n_o_c, unsigned short int col[], char* c_tile[])
@@ -740,15 +754,13 @@ struct Array_Table
 		column = col;
 		Column_tile = c_tile; 
 		List_content_ID= new unsigned short int[n_o_c];
-		List_content = new char *[n_o_c];
-		for(int i =  0; i<n_o_c;i++)
-		List_content[i]= (char*) calloc(100,sizeof(char*));
-		
 		
 	}
 	void free_Table()
 	{
-		for(int i = 0; i<NUMBER_OF_COLUMN; i++)	List_content[i]=(char*) calloc(100,sizeof(char*));
+		for(int i = 0; i<NUMBER_OF_COLUMN; i++)
+		for(int j = 0; j<100;j++)
+		List_content[i][j]='\0';
 	}
 	void set_active()
 	{
@@ -766,16 +778,16 @@ struct Array_Table
 			}
 		}
 		/*first column*/
+	
 		for(int i = top_main; i<bottom;i++)
 			for(int j =left+1; j<left+column[0]-1;j++) 
 			R[i][j]=List_content_ID[0];
-			
+	 
 		for(int n= 0; n<NUMBER_OF_COLUMN-1; n++)
 			for(int i = top_main; i<bottom;i++)
 			for(int j = left+column[n]+1; j<left+column[n+1]-1;j++) 
 			R[i][j]=List_content_ID[n+1];
-			
-			
+					
 		for(int i = top_main; i<bottom;i++)
 			for(int j =left+column[NUMBER_OF_COLUMN-2]+1; j<right-1;j++) 
 			R[i][j]=List_content_ID[NUMBER_OF_COLUMN-1];			
@@ -783,8 +795,7 @@ struct Array_Table
 	void show()
 	{
 		
-		if(is_active==false)set_active();
-	
+		set_active();
 		setfillstyle(1, color );
 		bar(left, top_main, right, bottom);
 		setfillstyle(1,t_color);
@@ -792,9 +803,20 @@ struct Array_Table
 		setcolor(4);
 		setbkcolor(t_color);
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,font_size);
-		outtextxy(left+10,top+CONTENT_SPACE,Column_tile[0]);
+		outtextxy(left+5,top+CONTENT_SPACE,Column_tile[0]);
+		setbkcolor(color);
+		setcolor(0);
+		outtextxy(left+5,(top_main+bottom-font_size*8)/2,List_content[0]);
+		setcolor(4);
+		setbkcolor(t_color);
 		for(int i=1;i<NUMBER_OF_COLUMN;i++)	
-			outtextxy(left+column[i-1]+10,top+CONTENT_SPACE,Column_tile[i]);
+			outtextxy(left+column[i-1]+5,top+CONTENT_SPACE,Column_tile[i]);
+		setbkcolor(color);
+		setcolor(0);
+		for(int i=1;i<NUMBER_OF_COLUMN;i++)	
+		
+			outtextxy(left+column[i-1]+5,(top_main+bottom-font_size*8)/2,List_content[i]);
+		
 		setcolor(COLOR(128,128,128));
 		for(int i=1;i<NUMBER_OF_COLUMN;i++)
 			line(left+column[i-1],top+1,left+column[i-1],bottom-1);
