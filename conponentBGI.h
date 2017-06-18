@@ -334,7 +334,7 @@ struct Panel
 			}
 			y2++;
 		}
-		cout <<"Tap_List Cancel" <<endl; // Delete this line when release!!!
+		cout <<"Panel cancel" <<endl; // Delete this line when release!!!
 	};
 };
 
@@ -794,7 +794,7 @@ struct Array_Table
 	}
 	void show()
 	{
-		
+		cout <<"Array open>";
 		set_active();
 		setfillstyle(1, color );
 		bar(left, top_main, right, bottom);
@@ -838,6 +838,6 @@ struct Array_Table
 			}
 			y2++;
 		}
-		cout <<"Array_Table" <<endl; // Delete this line when release!!!
+		cout <<"Array cencel<" <<endl; // Delete this line when release!!!
 	};	
 };

@@ -11,7 +11,7 @@ struct Nhanvien{
 	char MANV[100];
 	char HO[100];
 	char TEN[100];
-	char PHAI[4];
+	char PHAI[5];
 //	DsHOADON nv_HOADON;			// tro den cac hoa don ma nhan vien do da lap
 };
 struct NodeNV{
@@ -58,15 +58,15 @@ using BGI
 */
 void XuatNhanvien(Nhanvien p,int x, int y,unsigned short int c_line[]){
 	outtextxy(x+c_line[0],y,p.MANV);
-	cout<< p.MANV<<endl;
-	cout<< "Ho :";
-	cout<< p.HO<<endl;
+//	cout<< p.MANV<<endl;
+//	cout<< "Ho :";
+//	cout<< p.HO<<endl;
 	outtextxy(x+c_line[1],y,p.HO);
-	cout<< "Ten :";
-	cout<<  p.TEN<<endl;
+//	cout<< "Ten :";
+//	cout<<  p.TEN<<endl;
 	outtextxy(x+c_line[2],y,p.TEN);
-	cout<< "Gioi tinh :"; //su dung form list button voi 2 lua chon Nam/Nu 
-	cout<< p.PHAI<<endl;
+//	cout<< "Gioi tinh :"; //su dung form list button voi 2 lua chon Nam/Nu 
+//	cout<< p.PHAI<<endl;
 	outtextxy(x+c_line[3],y,p.PHAI);
 }
 void init_nv(Tree &root){

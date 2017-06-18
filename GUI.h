@@ -11,7 +11,7 @@
 	 // Just using for testing
 
 int CURRENT_STRAGE;	
-unsigned int VT_ID=100,NV_ID=200,HD_ID=300;
+const unsigned int VT_ID=100,NV_ID=200,HD_ID=300;
 int ps;
 Frame m_f(APP_LEFT, APP_TOP, APP_RIGHT, APP_BOTTOM,COLOR(255,255,255));
 
@@ -46,7 +46,7 @@ Button VT_new_cancel(126,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,CO
 //select table
 Array_Table VT_Select(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0), 4, VT_new_c_line, VT_new_c_tile);
 Button VT_Select_save(116,APP_RIGHT-95, APP_BOTTOM-120,APP_RIGHT-5,APP_BOTTOM-82,COLOR(0,0,220),2," OK\0");
-Button VT_Select_cancel(117,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,COLOR(0,0,220),2," XOA\0");
+Button VT_Select_delete(117,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,COLOR(0,0,220),2," XOA\0");
 
 /*
 FONT SIZE: 1
@@ -67,7 +67,7 @@ Button NV_new_cancel(226,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,CO
 //Select table
 Nhanvien buf;
 Array_Table NV_Select(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0), 4, NV_new_c_line, NV_new_c_tile);
-Button NV_Select_save(216,APP_RIGHT-95, APP_BOTTOM-120,APP_RIGHT-5,APP_BOTTOM-82,COLOR(0,0,220),2," OK\0");
+Button NV_Select_save(217,APP_RIGHT-95, APP_BOTTOM-120,APP_RIGHT-5,APP_BOTTOM-82,COLOR(0,0,220),2," OK\0");
 
 /*
 FONT SIZE: 1
@@ -203,6 +203,9 @@ void save_VT_new()
 	{
 	
 	FindandInsert(DataVattu,pre_add);
+	VT_Book.TOTAL_PAGE =  DataVattu.num/10+ (DataVattu.num%10!=0);
+	
+	cout <<"TTPAGE::" <<VT_Book.TOTAL_PAGE;
 	cancel_VT_new();
 	VT_Book.show();
 	lietkeVattu(DataVattu,
@@ -288,10 +291,11 @@ void Select_DVTVT()
 	
 	
 }
-void cancel_VT_seclect()
+void delete_VT_seclect()
 {
 	deleteVattu(ps,DataVattu);
-	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0) ;
+	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0);
+	if(VT_Book.CURENT_PAGE > VT_Book.TOTAL_PAGE) VT_Book.CURENT_PAGE --;
 	VT_Select.cancel();
 	active_bar.cancel();
 	setfillstyle(1,COLOR(128,128,255));
@@ -312,7 +316,7 @@ void save_VT_seclect()
 	if(error.check)
 	{
 	
-	cancel_VT_seclect();
+	delete_VT_seclect();
 	FindandInsert(DataVattu,pre_add);
 	VT_Book.show();
 	lietkeVattu(DataVattu,
@@ -342,6 +346,7 @@ void VT_Book_line1()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 0;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -349,7 +354,7 @@ void VT_Book_line1()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -359,6 +364,7 @@ void VT_Book_line2()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 1;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -366,7 +372,7 @@ void VT_Book_line2()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -376,6 +382,7 @@ void VT_Book_line3()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 2;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -383,7 +390,7 @@ void VT_Book_line3()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -393,6 +400,7 @@ void VT_Book_line4()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 3;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{	if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -400,7 +408,7 @@ void VT_Book_line4()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+//	VT_Select_cancel.show();
 	VT_Select_save.show();
 	}
 }
@@ -410,6 +418,7 @@ void VT_Book_line5()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 4;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -417,7 +426,7 @@ void VT_Book_line5()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -427,6 +436,7 @@ void VT_Book_line6()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 5;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -434,7 +444,7 @@ void VT_Book_line6()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -444,6 +454,7 @@ void VT_Book_line7()
 	ps = (VT_Book.CURENT_PAGE-1)*10 + 6;
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -451,7 +462,7 @@ void VT_Book_line7()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -462,6 +473,7 @@ void VT_Book_line8()
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{
 	if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -469,7 +481,7 @@ void VT_Book_line8()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -480,6 +492,7 @@ void VT_Book_line9()
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{
 	if(active_bar.is_active) active_bar.cancel();
+	VT_Select.free_Table();
 	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
@@ -487,7 +500,7 @@ void VT_Book_line9()
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -497,14 +510,15 @@ void VT_Book_line10()
 	if(strlen(DataVattu._vattu[ps].MAVT)!=0)
 	{
 	if(active_bar.is_active) active_bar.cancel();
-strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
+	VT_Select.free_Table();
+	strcpy(VT_Select.List_content[0] , DataVattu._vattu[ps].MAVT);
 	strcpy(VT_Select.List_content[1] , DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[2] , DataVattu._vattu[ps].DVT);
 	strcpy(VT_Select.List_content[3] , DataVattu._vattu[ps].soluongton);
 	if(VT_Select.is_active) VT_Select.cancel();
 	active_bar.Show();
 	VT_Select.show();
-	VT_Select_cancel.show();
+	VT_Select_delete.show();
 	VT_Select_save.show();
 	}
 }
@@ -574,7 +588,7 @@ void new_Phai()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerString(NV_new.List_content[3],5,VT_new.left+NV_new.column[2]+5,(NV_new.top_main+NV_new.bottom-textheight("S"))/2,NV_new.List_content_ID[3]);
+	ScannerString(NV_new.List_content[3],4,VT_new.left+NV_new.column[2]+5,(NV_new.top_main+NV_new.bottom-textheight("S"))/2,NV_new.List_content_ID[3]);
 }
 void cancel_NV_new()
 {
@@ -682,12 +696,13 @@ void Select_PHAI()
 //	strcpy(scan ,buf.PHAI);
 //	strcpy(NV_Select.List_content[3],scan);
 cout <<"::::>>" ;
-	ScannerString(NV_Select.List_content[3],5,NV_new.left+NV_new.column[2]+5,(NV_Select.top_main+NV_Select.bottom-textheight("S"))/2,NV_Select.List_content_ID[3]);
+	ScannerString(NV_Select.List_content[3],4,NV_new.left+NV_new.column[2]+5,(NV_Select.top_main+NV_Select.bottom-textheight("S"))/2,NV_Select.List_content_ID[3]);
 	//	strcpy(DataVattu._vattu[ps].DVT,scan);
 	
 }
 void cancel_NV_seclect()
 {
+	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0) ;
 	VT_new.free_Table();
 	VT_new.cancel();
 	active_bar.cancel();
@@ -733,11 +748,11 @@ void NV_Book_line1()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 1;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -754,11 +769,11 @@ void NV_Book_line2()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 2;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -775,11 +790,11 @@ void NV_Book_line3()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 3;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -796,11 +811,11 @@ void NV_Book_line4()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 4;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -817,11 +832,11 @@ void NV_Book_line5()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 5;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -838,11 +853,11 @@ void NV_Book_line6()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 6;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -859,11 +874,11 @@ void NV_Book_line7()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 7;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -880,11 +895,11 @@ void NV_Book_line8()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 8;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -901,11 +916,11 @@ void NV_Book_line9()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 9;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -922,11 +937,11 @@ void NV_Book_line10()
 	
 	ps = (NV_Book.CURENT_PAGE-1)*10 + 10;
 	
-	if(ps<DataNhanvien.num)
+	if(ps<=DataNhanvien.num)
 	{
 	buf = searchTreebyNum(DataNhanvien._nhanvien,ps);
 	if(active_bar.is_active) active_bar.cancel();
-
+	NV_Select.free_Table();
 	strcpy(NV_Select.List_content[0] , buf.MANV);
 	strcpy(NV_Select.List_content[1] , buf.HO);
 	strcpy(NV_Select.List_content[2] , buf.TEN);
@@ -1003,8 +1018,12 @@ void GUI_Init()
 	F_R[Menu_Button.ID]=Show_Menu_List;
 	/*Adding menu tab contents*/
 	Menu_Tab.List_content_ID[0]= 3;
-	/*Vattu ID*/
 	Menu_Tab.List_content_ID[1] = VT_ID;
+	Menu_Tab.List_content_ID[2] = NV_ID;
+	Menu_Tab.List_content_ID[3] = HD_ID;
+	Menu_Tab.List_content_ID[4] = Dic_Dialog.ID;
+		
+	/*Vattu ID*/
 	F_R[VT_ID]=Show_VT;
 	for(int i = 0; i<VT_Book.NUMBER_OF_LINE;i++)
 		VT_Book.List_content_ID[i]=VT_ID+i+1;
@@ -1042,7 +1061,7 @@ void GUI_Init()
 	F_R[VT_Select.List_content_ID[2]]=Select_DVTVT;
 	
 	F_R[VT_Select_save.ID]= save_VT_seclect;
-	F_R[VT_Select_cancel.ID]= cancel_VT_seclect;
+	F_R[VT_Select_delete.ID]= delete_VT_seclect;
 	
 	F_R[VT_ID+99] = save_Vattu;
 	VT_Book.prev_ID=111;
@@ -1051,7 +1070,7 @@ void GUI_Init()
 	F_R[VT_Book.next_ID] = next_VT_Book;
 	
 	/*Nhan vien ID*/
-	Menu_Tab.List_content_ID[2] = NV_ID;
+	
 	F_R[NV_ID]=Show_NV;
 	for(int i = 0; i<NV_Book.NUMBER_OF_LINE;i++)
 	NV_Book.List_content_ID[i]=NV_ID+i+1;
@@ -1087,7 +1106,7 @@ void GUI_Init()
 	F_R[NV_Select.List_content_ID[2]]=Select_TEN;
 	NV_Select.List_content_ID[3]=216;
 	F_R[NV_Select.List_content_ID[3]]=Select_PHAI;
-		F_R[NV_Select_save.ID]= save_NV_seclect;
+	F_R[NV_Select_save.ID]= save_NV_seclect;
 		
 	F_R[NV_ID+99] = save_Nhanvien;
 	NV_Book.prev_ID=211;
@@ -1095,16 +1114,16 @@ void GUI_Init()
 	NV_Book.next_ID=212;
 	F_R[NV_Book.next_ID] = next_NV_Book;
 	/*Hoa don ID*/
-	Menu_Tab.List_content_ID[3] = HD_ID;
+
 	F_R[HD_ID]=Show_HD;
 	/*Dic ID*/
-	Menu_Tab.List_content_ID[4] = Dic_Dialog.ID;
+
 	F_R[Dic_Dialog.ID]=Show_Dic;
 	F_R[Dic_Dialog.cID]=Cancel_Dic;
 	/*main menu init*/
 	Menu_Tab.line_color = COLOR(200,200,200);
 	/*Vat Tu init*/
-	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0) ;
+	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0);
 	if(VT_Book.TOTAL_PAGE == 0) VT_Book.TOTAL_PAGE=1;
 	cout <<"TOTAL_PAGE:: "<<VT_Book.TOTAL_PAGE<<endl;
 	VT_Book.text_color = 0;
