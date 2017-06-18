@@ -2,6 +2,7 @@
 #include <iostream>
 #include <winbgim.h>
 #include <fstream>
+#include "HOADON.h"
 using namespace std;
 
 /*file stream*/
@@ -12,7 +13,7 @@ struct Nhanvien{
 	char HO[100];
 	char TEN[100];
 	char PHAI[5];
-//	DsHOADON nv_HOADON;			// tro den cac hoa don ma nhan vien do da lap
+	DsHOADON nv_HOADON;			// tro den cac hoa don ma nhan vien do da lap
 };
 struct NodeNV{
 	Nhanvien nv;
@@ -79,6 +80,7 @@ NodeNV* GetNode_NV(Nhanvien k){
 	NodeNV* p = new NodeNV;
 	p->nv  = k;
 	p->left = p->right = NULL;
+	init_hd( p->nv.nv_HOADON);
 	return p;
 }
 
@@ -98,15 +100,14 @@ void Insert_NV(NodeNV* p,Tree &root){
 // in ra man hinh day tang dan
 void addNhanvien(Tree &root, Nhanvien nv){
 	NodeNV * p = GetNode_NV(nv);
+
 	Insert_NV(p,root);
 	DataNhanvien.num++;
 }
 bool Find_NV(Tree root,char* MaNV){
-	bool check = false;
 	if(root == NULL ) return false;
 	if(strcmp(MaNV , root->nv.MANV) == 0) return true;
-	 return (check | Find_NV(root->right,MaNV)); 
-	 return (check | Find_NV(root->left,MaNV));
+	 return  (Find_NV(root->right,MaNV) | Find_NV(root->left,MaNV));
 }
 
 
@@ -147,19 +148,6 @@ void Find_NV_Return(Tree root, int k,Nhanvien &get){
 	}
 	i++;
 	Find_NV_Return(root->right,k,get);
-}
-void Find_pos_NV_process(Tree root,char* MaNV,int &pos){
-	if(root == NULL) return;
-	Find_pos_NV_process(root->left,MaNV,pos);
-	if(strcmp(MaNV,root->nv.MANV)==0) pos = i;
-	i++;
-	Find_pos_NV_process(root->right,MaNV,pos);
-}
-int Find_pos_NV(Tree root , char* MaNV){
-	 i = 1;
-	 int x;
-	 Find_pos_NV_process(root,MaNV,x);
-	 return x;
 }
 
 Nhanvien searchTreebyNum(Tree root,int n){
@@ -221,122 +209,5 @@ void initdataNhanvien(){
 	delKey(DataNhanvien._nhanvien,s);
 
 	f.close();
-}
-struct nhanvien_error{
-	char* error_st[4];
-	int error_color[4];
-	bool check = true;
-};
-nhanvien_error Check_NV_new(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], char Phai[])
-{
-		nhanvien_error p;
-		
-		
-		// xu li ma vat tu
-		if(Find_NV(DataNhanvien._nhanvien,MaNV)) {
-			p.error_st[0] = "Da ton tai\0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-		else if(strlen(MaNV)==0) {
-			p.error_st[0] = "Khong duoc rong  \0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-			else
-			p.error_st[0] = "Co the su dung   \0",p.error_color[0] = COLOR(0,255,0);
-		// xu li ten vat tu
-		
-			int len_Ho = strlen(Ho);
-			if(len_Ho == 0) {
-				p.error_st[1] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[1] = 4;
-			}
-			else p.error_st[1] = "Co the su dung \0",p.error_color[1] = COLOR(0,255,0);
-			
-		
-		// xu li Don vi
-		
-			int len_ten = strlen(Ten);
-			if(len_ten == 0){
-				p.error_st[2] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[2] = 4;
-			}
-			else p.error_st[2] = "Co the su dung \0",p.error_color[2] = COLOR(0,255,0);
-		
-		//xu li so luong
-		
-			int len_phai = strlen(Phai);
-			if(len_phai == 0){
-				p.error_st[3] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[3] = 4;
-			}
-			else p.error_st[3] = "Co the su dung \0",p.error_color[3] = COLOR(0,255,0);
-			if(p.check == true){
-			strcpy(nv.MANV, MaNV);
-			strcpy(nv.HO, Ho);
-			strcpy(nv.TEN , Ten);
-			strcpy(nv.PHAI,Phai);
-			}
-		return p;
-}
-nhanvien_error Check_NV_seclect(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], char Phai[],char buf[])
-{
-		nhanvien_error p;
-		// xu li ma vat tu
-		cout<<"MaNV:::"<<MaNV<<"buf:::"<<buf<<endl;
-		if(strcmp(MaNV,buf)==0) cout<<"dung"<<endl;
-		if(Find_NV(DataNhanvien._nhanvien,MaNV)==true &&  strcmp(buf , MaNV)!=0) {
-			p.error_st[0] = "Vat tu da ton tai\0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-		else if(strlen(MaNV)==0) {
-			p.error_st[0] = "Khong duoc rong  \0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-			else
-			p.error_st[0] = "Co the su dung   \0",p.error_color[0] = COLOR(0,255,0);
-		// xu li ten vat tu
-		
-			int len_Ho = strlen(Ho);
-			if(len_Ho == 0) {
-				p.error_st[1] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[1] = 4;
-			}
-			else p.error_st[1] = "Co the su dung \0",p.error_color[1] = COLOR(0,255,0);
-			
-		
-		// xu li Don vi
-		
-			int len_Ten = strlen(Ten);
-			if(len_Ten == 0){
-				p.error_st[2] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[2] = 4;
-			}
-			else p.error_st[2] = "Co the su dung \0",p.error_color[2] = COLOR(0,255,0);
-		
-		//xu li so luong
-		
-			int len_Phai = strlen(Phai);
-			if(len_Phai == 0){
-				p.error_st[3] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[3] = 4;
-			}
-			else p.error_st[3] = "Co the su dung \0",p.error_color[3] = COLOR(0,255,0);
-				if(p.check == true){
-			strcpy(nv.MANV, MaNV);	
-			strcpy(nv.HO, Ho);
-			strcpy(nv.TEN, Ten);
-			strcpy(nv.PHAI,Phai);
-		}
-		return p;
 }
 

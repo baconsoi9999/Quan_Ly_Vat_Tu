@@ -131,6 +131,7 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 		clearmouseclick(WM_LBUTTONDOWN);
 		delay(1);
 		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
+		
 		break;
 		
 		if(kbhit())
@@ -176,15 +177,20 @@ void ScannerNum(char s[],int max, int px ,int py,int ID)
 	int mx=-1;
 	int my=-1;
 	unsigned int l = strlen(s);
+	s[l] ='_';
 	outtextxy(px,py,s);
 	while(1)
 	{
 		getmouseclick(WM_LBUTTONDOWN,mx,my);
 		clearmouseclick(WM_LBUTTONDOWN);
 		delay(1);
-		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
-		break;
-		
+		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) {
+			
+			s[l] = ' ';
+			outtextxy(px,py,s);
+			s[l]= '\0';	
+			break;
+		}
 		if(kbhit())
 		{
 				
@@ -199,13 +205,20 @@ void ScannerNum(char s[],int max, int px ,int py,int ID)
 					l++;
 				}
 			}
-			if(c == ENTER) break;
+			if(c == ENTER) {
+			s[l] = ' ';
+			outtextxy(px,py,s);
+			s[l]= '\0';
+			break;
+			}
 			if(c == BACKSPACE&&l>0){
+				s[l]=' ';
 				s[l-1] =' ';
 				l--;
 			}
 //			cout <<s<<endl;
 			printf("%s\n",s);
+			s[l] = '_';
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;
 		}
@@ -670,7 +683,7 @@ struct Book
 		
 		for(int i = 0; i<NUMBER_OF_LINE; i++)
 		{
-			outtextxy(left+ 10 , top+ CONTENT_SPACE + (i+1)*(font_size*8+ CONTENT_SPACE*2+1), List_content_tile[i]);
+			outtextxy(left+ 5 , top+ CONTENT_SPACE + (i+1)*(font_size*8+ CONTENT_SPACE*2+1), List_content_tile[i]);
 		}
 		setfillstyle(1,t_color);
 		/*tile bar*/
@@ -724,6 +737,7 @@ struct Book
 struct Array_Table
 {
 	bool is_active = false;
+	bool lock = true;
 	int left;
 	int top,top_main;
 	int right;
@@ -761,6 +775,7 @@ struct Array_Table
 		for(int i = 0; i<NUMBER_OF_COLUMN; i++)
 		for(int j = 0; j<100;j++)
 		List_content[i][j]='\0';
+		lock = true;
 	}
 	void set_active()
 	{

@@ -1,35 +1,46 @@
 // danh sach hoa don (danh sach lien ket don)
-#include <F:\Quan_Ly_Vat_Tu\Data\CT_HOADON.h>
-#include <F:\Quan_Ly_Vat_Tu\Data\Vattu.h>
-#include <iostream>
+#include "CT_HOADON.h"
+
 struct NodeHD{
 	char soHD[100];
-	char ngayLap[100];
-	char loai[100];
+	char day[2];
+	char month[2];
+	char year[4];
+	char loai;
 	CT_HOADON chitiet;
-	NodeHD* _next = NULL;
+	NodeHD* _next;
 };
-struct HOADON{
+struct DsHOADON{
 	NodeHD* hdHead;
 };
-void Init(HOADON &hd){
+void init_hd(DsHOADON &hd){
 	hd.hdHead = NULL;
 }
-void addTail(HOADON &hd,NodeHD* p){
+NodeHD* GetNode_hd(char* sohd,char day[], char month[],char year[], char loai,CT_HOADON ct){
+	NodeHD* p;
+	strcpy(p->soHD , sohd);
+	strcpy(p->day , day);
+	strcpy(p->month , month);
+	strcpy(p->year , year);
+	loai = loai;
+	p->chitiet = ct;
 	p->_next = NULL;
+}
+void addTail_HD(DsHOADON &hd,NodeHD* p){
 	if(hd.hdHead == NULL) hd.hdHead = p;
 	else{
 		NodeHD* q = hd.hdHead;
 		while(q != NULL){
 			if(q->_next == NULL){
 				q->_next = p;
+				break;
 			}
 			else q = q->_next;
 		}
 	}
 }
 #define CTHEAD hd.hdHead->chitiet.ctHead
-void DeleteHD(HOADON &hd,char maVT[]){
+void DeleteHD(DsHOADON &hd,char maVT[]){
 	if(strcmp(CTHEAD -> MAVT , maVT)==0){
 		CTHEAD = CTHEAD->_next;
 	}
@@ -45,5 +56,4 @@ void DeleteHD(HOADON &hd,char maVT[]){
 		}
 	}
 }
-
 

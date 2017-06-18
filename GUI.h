@@ -1,7 +1,4 @@
-	#include "Data/Vattu.h"
-	#include "Data/Nhanvien.h"
-//	#include "Data/HOADON.h"
-//	#include "Data/CT_HOADON.H"
+	#include "Data\ERRORCHECK.h"
 	#include <E:\#PTIT CAU TRUC DU LIEU GIAI THUAT\de tai CTDLGT\Quan_Ly_Vat_Tu\conponentBGI.h>
 	#include <iostream>
 	#include <string.h>
@@ -75,7 +72,20 @@ LINE SPACE: 39
 NUMBER OF LINES: 10
 *****
 */
-//Tab_List HD_List(APP_LEFT+5, Menu_Button.bottom+39+5, APP_RIGHT-5 ,1 ,COLOR(254,244,205), 10,l_tile);
+Button Lap_HD_Button(301,APP_LEFT+50,APP_TOP+150,APP_LEFT+50+186,APP_TOP+200,COLOR(0,255,0),2,"LAP HOA DON\0");
+Panel Lap_HD_Panel(APP_LEFT, APP_TOP+39, APP_RIGHT, APP_BOTTOM);
+Frame Lap_HD_Frame(APP_LEFT, APP_TOP+39,APP_RIGHT,APP_BOTTOM-130,COLOR(255,255,255));
+
+unsigned short int Lap_HD_TT_c_Line[5]={266,356,446,536,626};
+char* Lap_HD_TT_c_Tile[6]={"So Hoa don\0","Ngay\0","Thang\0","Nam\0", "Loai\0", "Ma nhan vien lap\0"};
+Array_Table Lap_HD_TT(APP_LEFT+5, APP_TOP+39+50, APP_LEFT+897, APP_TOP+110+50,2,COLOR(234,244,253),COLOR(0,255,0),6,Lap_HD_TT_c_Line,Lap_HD_TT_c_Tile);
+Panel Lap_HD_TT_OK_panel(APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT.bottom);
+Button Lap_HD_TT_OK(302,APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT.bottom,COLOR(0,0,220),2," OK \0");
+unsigned short int CT_HD_c_Line[4]={74,442,596,750};
+char* CT_HD_c_Tile[5]= {"STT\0","Ma Vat tu\0","So luong\0","Dong gia\0", "%VAT"};
+char* CT_HD_l_tile[10]={"1\0","2\0","3\0","4\0","5\0"};
+Book CT_HD_Book(APP_LEFT+5,APP_TOP+160+50,APP_LEFT+850, 2 ,COLOR(234,244,253),COLOR(83,174,242),5,5,CT_HD_c_Line,CT_HD_c_Tile, CT_HD_l_tile);
+Dialog Input_Date(307,308,APP_LEFT+503,APP_TOP+184,APP_LEFT+803,APP_TOP+384,15,"Nhap ngay");
 /*
 FONT SIZE: 1
 LINE SPACE: 39
@@ -159,7 +169,7 @@ void new_MVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerCode(VT_new.List_content[0],16,VT_new.left+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[0]);
+	ScannerCode(VT_new.List_content[0],15,VT_new.left+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[0]);
 }
 void new_TVT()
 {
@@ -167,7 +177,7 @@ void new_TVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerString(VT_new.List_content[1],21,VT_new.left+VT_new.column[0]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[1]);
+	ScannerString(VT_new.List_content[1],20,VT_new.left+VT_new.column[0]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[1]);
 }
 void new_DVTVT()
 {
@@ -175,7 +185,7 @@ void new_DVTVT()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerString(VT_new.List_content[2],16,VT_new.left+VT_new.column[1]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[2]);
+	ScannerString(VT_new.List_content[2],15,VT_new.left+VT_new.column[1]+5,(VT_new.top_main+VT_new.bottom-textheight("S"))/2,VT_new.List_content_ID[2]);
 }
 void new_SLTVT()
 {
@@ -257,7 +267,7 @@ void Select_MVT()
 //		scan[i] = '/0';
 //	}
 	strcpy(VT_Select.List_content[0],scan);
-	ScannerCode(VT_Select.List_content[0],16,VT_Select.left+5,(VT_Select.top_main+VT_Select.bottom-textheight("S"))/2,VT_Select.List_content_ID[0]);
+	ScannerCode(VT_Select.List_content[0],15,VT_Select.left+5,(VT_Select.top_main+VT_Select.bottom-textheight("S"))/2,VT_Select.List_content_ID[0]);
 //strcpy(DataVattu._vattu[ps].MAVT,scan);
 	
 	cout<<"listcontent 2 ::::"<<VT_Select.List_content[0]<<endl;
@@ -272,7 +282,7 @@ void Select_TVT()
 	memset(scan,NULL,sizeof(scan));
 	strcpy(scan ,DataVattu._vattu[ps].TENVT);
 	strcpy(VT_Select.List_content[1],scan);
-	ScannerString(VT_Select.List_content[1],21,VT_new.left+VT_new.column[0]+5,(VT_Select.top_main+VT_Select.bottom-textheight("S"))/2,VT_Select.List_content_ID[1]);
+	ScannerString(VT_Select.List_content[1],20,VT_new.left+VT_new.column[0]+5,(VT_Select.top_main+VT_Select.bottom-textheight("S"))/2,VT_Select.List_content_ID[1]);
 //	strcpy(DataVattu._vattu[ps].TENVT,scan);
 
 }
@@ -986,12 +996,102 @@ void Show_NV()
 	cout <<"nhan vien page open" <<endl; // Delete this line when release!!!
 }
 
+void Lap_HD_TT_SoHD()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerNum(Lap_HD_TT.List_content[0],15,Lap_HD_TT.left+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[0]);
+}
+void Lap_HD_TT_Ngay()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerNum(Lap_HD_TT.List_content[1],2,Lap_HD_TT.left+Lap_HD_TT.column[0]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[1]);
+}
+void Lap_HD_TT_Thang()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerNum(Lap_HD_TT.List_content[2],2,Lap_HD_TT.left+Lap_HD_TT.column[1]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[2]);
+}
+void Lap_HD_TT_Nam()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerNum(Lap_HD_TT.List_content[3],4,Lap_HD_TT.left+Lap_HD_TT.column[2]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[3]);
+}
+void Lap_HD_Loai()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerCode(Lap_HD_TT.List_content[4],1,Lap_HD_TT.left+Lap_HD_TT.column[3]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[4]);
+}
+void Lap_HD_TT_MaNV()
+{
+	setbkcolor(VT_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
+	clearStream();
+	ScannerCode(Lap_HD_TT.List_content[5],15,Lap_HD_TT.left+Lap_HD_TT.column[4]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[5]);
+}
+void Lap_HD_TT_save()
+{
+
+	hoadon_error error;
+	NodeHD* pre_add;
+	error = Check_HD_new(pre_add,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][1],Lap_HD_TT.List_content[5]);
+	if(error.check)
+	{
+		Lap_HD_TT_OK_panel.cancel();
+	}
+	else 
+	{
+		setbkcolor(getpixel(NV_new.left,NV_new.bottom+5));
+		setcolor(4);
+		settextstyle(DEFAULT_FONT, HORIZ_DIR,1);
+		setcolor(error.error_color[0]);
+		outtextxy(Lap_HD_TT.left+5,Lap_HD_TT.bottom+5,error.error_st[0]);
+		for(int i = 1; i<4;i++)
+		{
+			setcolor(error.error_color[i]);
+			outtextxy(Lap_HD_TT.left+NV_new_c_line[i-1],Lap_HD_TT.bottom+5,error.error_st[i]);
+		}
+	}
+
+}
+void Lap_HD()
+{
+	Lap_HD_Panel.Show();
+	Lap_HD_Frame.Show();
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,3);
+	setbkcolor(Lap_HD_Frame.color);
+	setcolor(0);
+	outtextxy((APP_LEFT+APP_RIGHT-8*3*11)/2,APP_TOP+45,"LAP HOA DON");
+	Lap_HD_TT.show();
+	Lap_HD_TT_OK_panel.Show();
+	Lap_HD_TT_OK.show();
+	CT_HD_Book.show();
+	
+}
+
 void Show_HD ()
 {
 	init_R();
 	CURRENT_STRAGE = 300;
 	main_frame();
 	menu_slash("Hoa don");
+	Lap_HD_Button.show();
+	
 	cout <<"hoa don page open" <<endl; // Delete this line when release!!!
 }
 
@@ -1116,6 +1216,22 @@ void GUI_Init()
 	/*Hoa don ID*/
 
 	F_R[HD_ID]=Show_HD;
+	F_R[Lap_HD_Button.ID]= Lap_HD;
+	F_R[Lap_HD_TT_OK.ID] = Lap_HD_TT_save;//302
+	Lap_HD_TT.List_content_ID[0] = 303;
+	F_R[Lap_HD_TT.List_content_ID[0]] = Lap_HD_TT_SoHD;
+	Lap_HD_TT.List_content_ID[1] = 304;
+	F_R[Lap_HD_TT.List_content_ID[1]] = Lap_HD_TT_Ngay;
+	Lap_HD_TT.List_content_ID[2] = 305;
+	F_R[Lap_HD_TT.List_content_ID[2]] = Lap_HD_TT_Thang;
+	Lap_HD_TT.List_content_ID[3] = 306;
+	F_R[Lap_HD_TT.List_content_ID[3]] = Lap_HD_TT_Nam;
+	Lap_HD_TT.List_content_ID[4] = 307;
+	F_R[Lap_HD_TT.List_content_ID[4]] = Lap_HD_Loai;
+	Lap_HD_TT.List_content_ID[5] = 308;
+	F_R[Lap_HD_TT.List_content_ID[5]] =  Lap_HD_TT_MaNV;
+
+	
 	/*Dic ID*/
 
 	F_R[Dic_Dialog.ID]=Show_Dic;

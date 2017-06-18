@@ -54,7 +54,7 @@ void Insert(DsVattu &ds,int pos,Vattu vt )
 	ds._vattu[pos] = vt;
 	ds.num ++;
 }
-int Find(DsVattu &ds, char p[])
+int Find_VT(DsVattu &ds, char p[])
 {
 	for(int i = 0;i < ds.num; i++){
 		if(strcmp(ds._vattu[i].MAVT , p)==0) return i;
@@ -63,7 +63,7 @@ int Find(DsVattu &ds, char p[])
 } 
 void FindandInsert(DsVattu &ds,Vattu vt)
 {
-	if(Find(ds ,vt.MAVT)) return;
+	if(Find_VT(ds ,vt.MAVT)) return;
 //	for(int i = 0; i < ds.num; i++){
 //		bool flag = true;
 	//	for(int j=0; j<100||j!='\0';j++)
@@ -82,6 +82,12 @@ void FindandInsert(DsVattu &ds,Vattu vt)
 	cout<<"---ds.num---"<<ds.num<<endl;
 	Insert(ds,ds.num,vt);
 	return ;
+}
+int Find_VT_return(DsVattu &ds,char *MaVT){
+	for(int i=0;i<ds.num;i++){
+		if(strcmp(ds._vattu[i].MAVT,MaVT)==0) return i;
+	}
+	return 0;
 }
 //Vattu addVattu()
 //{
@@ -151,129 +157,5 @@ void lietkeVattu(DsVattu ds,int batdau, int ketthuc,int x,int y,int SPACE,unsign
 	{
 		printVattu(ds._vattu[i],x,SPACE+y+(i-batdau)*(16+ SPACE*2 + 1),c_line);	// liet ke theo trang 
 	}
-}
-
-struct vattu_error{
-	char* error_st[4];
-	int error_color[4];
-	bool check = true;
-};
-vattu_error Check_VT_new(Vattu &vt,char MaVT[], char TVT[], char Donvi[], char sluong[])
-{
-		vattu_error p;
-		
-		
-		// xu li ma vat tu
-		if(Find(DataVattu,MaVT)) {
-			p.error_st[0] = "Vat tu da ton tai\0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-		else if(strlen(MaVT)==0) {
-			p.error_st[0] = "Khong duoc rong  \0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-			else
-			p.error_st[0] = "Co the su dung   \0",p.error_color[0] = COLOR(0,255,0);
-		// xu li ten vat tu
-		
-			int len_TVT = strlen(TVT);
-			if(TVT[len_TVT-1] == ' ') TVT[--len_TVT] = NULL;
-			if(len_TVT == 0) {
-				p.error_st[1] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[1] = 4;
-			}
-			else p.error_st[1] = "Co the su dung \0",p.error_color[1] = COLOR(0,255,0);
-			
-		
-		// xu li Don vi
-		
-			int len_DV = strlen(Donvi);
-			if(Donvi[len_DV-1] == ' ') Donvi[len_DV--] = NULL;
-			if(len_DV == 0){
-				p.error_st[2] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[2] = 4;
-			}
-			else p.error_st[2] = "Co the su dung \0",p.error_color[2] = COLOR(0,255,0);
-		
-		//xu li so luong
-		
-			int len_slt = strlen(sluong);
-			if(len_slt == 0){
-				p.error_st[3] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[3] = 4;
-			}
-			else p.error_st[3] = "Co the su dung \0",p.error_color[3] = COLOR(0,255,0);
-				if(p.check == true){
-			strcpy(vt.MAVT, MaVT);
-			
-			strcpy(vt.TENVT, TVT);
-			
-			strcpy(vt.DVT , Donvi);
-			strcpy(vt.soluongton,sluong);
-		}
-		return p;
-}
-vattu_error Check_VT_seclect(Vattu &vt,char MaVT[], char TVT[], char Donvi[], char sluong[],int check_vt)
-{
-		vattu_error p;
-		// xu li ma vat tu
-		if(Find(DataVattu,MaVT) != check_vt && Find(DataVattu,MaVT)>0) {
-			p.error_st[0] = "Vat tu da ton tai\0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-		else if(strlen(MaVT)==0) {
-			p.error_st[0] = "Khong duoc rong  \0";
-			p.check = false;
-			p.error_color[0] = 4;
-		}
-			else
-			p.error_st[0] = "Co the su dung   \0",p.error_color[0] = COLOR(0,255,0);
-		// xu li ten vat tu
-		
-			int len_TVT = strlen(TVT);
-			if(TVT[len_TVT-1] == ' ') TVT[len_TVT--] = NULL;
-			if(len_TVT == 0) {
-				p.error_st[1] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[1] = 4;
-			}
-			else p.error_st[1] = "Co the su dung \0",p.error_color[1] = COLOR(0,255,0);
-			
-		
-		// xu li Don vi
-		
-			int len_DV = strlen(Donvi);
-			if(Donvi[len_DV-1] == ' ') Donvi[len_DV--] = NULL;
-			if(len_DV == 0){
-				p.error_st[2] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[2] = 4;
-			}
-			else p.error_st[2] = "Co the su dung \0",p.error_color[2] = COLOR(0,255,0);
-		
-		//xu li so luong
-		
-			int len_slt = strlen(sluong);
-			if(len_slt == 0){
-				p.error_st[3] = "Khong duoc rong\0";
-				p.check = false;
-				p.error_color[3] = 4;
-			}
-			else p.error_st[3] = "Co the su dung \0",p.error_color[3] = COLOR(0,255,0);
-				if(p.check == true){
-			strcpy(vt.MAVT, MaVT);
-			
-			strcpy(vt.TENVT, TVT);
-			
-			strcpy(vt.DVT , Donvi);
-			strcpy(vt.soluongton,sluong);
-		}
-		return p;
 }
 

@@ -7,7 +7,7 @@ int main()
 {
 	initdataVattu();
 	initdataNhanvien();
-	Nhapnhieunhanvien();
+//	Nhapnhieunhanvien();
 	inconsole();
 	initwindow( SCREAN_W, SCREAN_H);
 	init_R();
