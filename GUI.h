@@ -10,6 +10,7 @@
 int CURRENT_STRAGE;	
 const unsigned int VT_ID=100,NV_ID=200,HD_ID=300;
 int ps;
+Thongtin_HD tt;
 Frame m_f(APP_LEFT, APP_TOP, APP_RIGHT, APP_BOTTOM,COLOR(255,255,255));
 
 Panel active_bar(APP_LEFT,APP_BOTTOM-130,APP_RIGHT,APP_BOTTOM);
@@ -1034,7 +1035,7 @@ void Lap_HD_Loai()
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
-	ScannerCode(Lap_HD_TT.List_content[4],1,Lap_HD_TT.left+Lap_HD_TT.column[3]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[4]);
+	ScannerLoai(Lap_HD_TT.List_content[4],1,Lap_HD_TT.left+Lap_HD_TT.column[3]+5,(Lap_HD_TT.top_main+Lap_HD_TT.bottom-textheight("S"))/2,Lap_HD_TT.List_content_ID[4]);
 }
 void Lap_HD_TT_MaNV()
 {
@@ -1048,10 +1049,11 @@ void Lap_HD_TT_save()
 {
 
 	hoadon_error error;
-	NodeHD* pre_add;
-	error = Check_HD_new(pre_add,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][1],Lap_HD_TT.List_content[5]);
+	cout<<"::listcontent::"<<Lap_HD_TT.List_content[0]<<endl;
+	error = Check_HD_new(tt,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][1],Lap_HD_TT.List_content[5]);
 	if(error.check)
 	{
+		cout<<"panel cancel";
 		Lap_HD_TT_OK_panel.cancel();
 	}
 	else 
@@ -1064,7 +1066,7 @@ void Lap_HD_TT_save()
 		for(int i = 1; i<6;i++)
 		{
 			setcolor(error.error_color[i]);
-			outtextxy(Lap_HD_TT.left+NV_new_c_line[i-1],Lap_HD_TT.bottom+5,error.error_st[i]);
+			outtextxy(Lap_HD_TT.left+Lap_HD_TT_c_Line[i-1],Lap_HD_TT.bottom+5,error.error_st[i]);
 		}
 	}
 

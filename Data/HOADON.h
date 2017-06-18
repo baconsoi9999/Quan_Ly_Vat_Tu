@@ -1,12 +1,14 @@
 // danh sach hoa don (danh sach lien ket don)
 #include "CT_HOADON.h"
-
-struct NodeHD{
+struct Thongtin_HD{
 	char soHD[100];
 	char day[2];
 	char month[2];
 	char year[4];
 	char loai;
+};
+struct NodeHD{
+	Thongtin_HD thongtin;
 	CT_HOADON chitiet;
 	NodeHD* _next;
 };
@@ -16,13 +18,9 @@ struct DsHOADON{
 void init_hd(DsHOADON &hd){
 	hd.hdHead = NULL;
 }
-NodeHD* GetNode_hd(char* sohd,char day[], char month[],char year[], char loai,CT_HOADON ct){
+NodeHD* GetNode_hd(Thongtin_HD tt,CT_HOADON ct){
 	NodeHD* p;
-	strcpy(p->soHD , sohd);
-	strcpy(p->day , day);
-	strcpy(p->month , month);
-	strcpy(p->year , year);
-	loai = loai;
+	p->thongtin = tt;
 	p->chitiet = ct;
 	p->_next = NULL;
 }

@@ -67,14 +67,19 @@ void ScannerString(char s[],int max, int px ,int py,int ID)
 	int mx=-1;
 	int my=-1;
 	unsigned int l = strlen(s);
+		s[l] ='_';
 	outtextxy(px,py,s);
 	while(1)
 	{
 		getmouseclick(WM_LBUTTONDOWN,mx,my);
 		clearmouseclick(WM_LBUTTONDOWN);
 		delay(1);
-		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
-		break;
+		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) {
+			s[l] = ' ';
+			outtextxy(px,py,s);
+			s[l]= '\0';	
+			break;
+		}
 		if(kbhit())
 		{			
 		char c = getch();
@@ -101,14 +106,21 @@ void ScannerString(char s[],int max, int px ,int py,int ID)
 					l++;
 				}
 			}
-			if(c == ENTER) break;
+			if(c == ENTER) {
+				s[l] = ' ';
+				outtextxy(px,py,s);
+				s[l]= '\0';
+				break;
+			}
 			if(c == BACKSPACE&&l>0)
 			{
+				s[l]=' ';
 				s[l-1] =' ';
 				l--;
 			}
 //			cout <<s<<endl;
 			printf("%s\n",s);
+			s[l] = '_';
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;
 		
@@ -124,6 +136,7 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 	int mx=-1;
 	int my=-1;
 	unsigned int l = strlen(s);
+		s[l] ='_';
 	outtextxy(px,py,s);
 	while(1)
 	{
@@ -131,9 +144,12 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 		clearmouseclick(WM_LBUTTONDOWN);
 		delay(1);
 		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
-		
-		break;
-		
+		{
+			s[l] = ' ';
+			outtextxy(px,py,s);
+			s[l]= '\0';	
+			break;
+		}
 		if(kbhit())
 		{
 				
@@ -157,14 +173,21 @@ void ScannerCode(char s[],int max, int px ,int py,int ID)
 					l++;
 				}
 			}
-			if(c == ENTER) break;
+			if(c == ENTER) {
+				s[l] = ' ';
+				outtextxy(px,py,s);
+				s[l]= '\0';
+				break;
+			}
 			if(c == BACKSPACE&&l>0){
+				s[l]=' ';
 				s[l-1] =' ';
 				l--;
 			}
 //			cout <<s<<endl;
 			printf("%s\n",s);
 			cout<<"l:::"<<l<<endl;
+			s[l] = '_';
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;
 		}
@@ -206,10 +229,10 @@ void ScannerNum(char s[],int max, int px ,int py,int ID)
 				}
 			}
 			if(c == ENTER) {
-			s[l] = ' ';
-			outtextxy(px,py,s);
-			s[l]= '\0';
-			break;
+				s[l] = ' ';
+				outtextxy(px,py,s);
+				s[l]= '\0';
+				break;
 			}
 			if(c == BACKSPACE&&l>0){
 				s[l]=' ';
@@ -218,6 +241,69 @@ void ScannerNum(char s[],int max, int px ,int py,int ID)
 			}
 //			cout <<s<<endl;
 			printf("%s\n",s);
+			s[l] = '_';
+			outtextxy(px,py,s);	
+			if(s[l]==' ') s[l]=NULL;
+		}
+	}
+	cout<<"da ket thu\n";
+	if((mx!=-1)&&(my!=-1)) F_R[R[my][mx]]();
+}
+void ScannerLoai(char s[],int max, int px ,int py,int ID)
+{
+	int mx=-1;
+	int my=-1;
+	unsigned int l = strlen(s);
+	cout<<"::l::"<<l<<endl;
+		s[l] ='_';
+	outtextxy(px,py,s);
+	while(1)
+	{
+		getmouseclick(WM_LBUTTONDOWN,mx,my);
+		clearmouseclick(WM_LBUTTONDOWN);
+		delay(1);
+		if  (!(((mx==-1)&&(my==-1))||(R[my][mx]== ID))) 
+		{
+			s[l] = ' ';
+			outtextxy(px,py,s);
+			s[l]= '\0';	
+			break;
+		}
+		if(kbhit())
+		{
+				
+			char c = getch();
+			
+			if(l<max)
+			{
+				if(c=='N' || c=='X')
+				{
+					s[l] = c;
+					l++;
+				//	cout<<"1111???\n";
+				}
+				if(c=='n' || c=='x')
+				{
+				//	cout<<"1111???\n";
+					s[l] = c;
+					l++;
+				}
+			//	cout<<"c:::"<<c<<endl;
+			}
+			if(c == ENTER) {
+				s[l] = ' ';
+				outtextxy(px,py,s);
+				s[l]= '\0';
+				break;
+			}
+			if(c == BACKSPACE&&l>0){
+				s[l]=' ';
+				s[l-1] =' ';
+				l--;
+			}
+//			cout <<s<<endl;
+			printf("%s\n",s);
+			cout<<"l:::"<<l<<endl;
 			s[l] = '_';
 			outtextxy(px,py,s);	
 			if(s[l]==' ') s[l]=NULL;

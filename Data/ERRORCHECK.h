@@ -510,7 +510,7 @@ bool Find_HD(Tree &root,char soHD[]){
 
 	for(NodeHD* p = root->nv.nv_HOADON.hdHead;p!=NULL;p = p->_next){
 
-		if(strcmp(p->soHD,soHD)==0) return true;
+		if(strcmp(p->thongtin.soHD,soHD)==0) return true;
 
 	}
 
@@ -530,8 +530,7 @@ struct hoadon_error{
 
 int dayofmonth[]={0,31,28,31,30,31,30,31,31,30,31,30,31};
 
-hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], char nam[], char loai,char MaNV[])
-
+hoadon_error Check_HD_new(Thongtin_HD hd, char SOHD[], char ngay[], char thang[], char nam[], char loai,char MaNV[])
 {
 
 //	int x = 4;
@@ -566,7 +565,7 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 
 		// xu li ma vat tu
 
-		if(strlen(soHD)==0){
+		if(strlen(SOHD)==0){
 
 		//	cout <<x++<<endl;
 
@@ -582,7 +581,7 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 
 		else{
 
-			if(Find_HD(DataNhanvien._nhanvien,soHD)) {
+			if(Find_HD(DataNhanvien._nhanvien,SOHD)) {
 
 			p.error_st[0] = "So hoa don trung\0";
 
@@ -704,7 +703,7 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 
 	//	cout <<x++<<endl;
 
-		if(loai!='N' && loai !='X') {
+		if(loai=='/0') {
 
 			p.error_st[4] = "Loai Khong hop le    \0";
 
@@ -738,22 +737,19 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 
 			if(p.check == true){
 
+			cout<<"1???"<<SOHD;
+		//	memset(hd.soHD,NULL,sizeof(hd.soHD));
+			strcpy(hd.soHD, SOHD);
+			cout<<"3>??";
+			strcpy(hd.day , ngay);
+			cout<<"4????";
+			strcpy(hd.month,thang);
+			cout<<"5????";
+			strcpy(hd.year , nam);
+			cout<<"6????";
+			hd.loai=loai;
 			
-
-			strcpy(hd->soHD, soHD);
-
-			strcpy(hd->day , ngay);
-
-			strcpy(hd->month,thang);
-
-			strcpy(hd->year , nam);
-
-			hd->loai=loai;
-
-			hd->_next = NULL;
-
-			
-
+			cout<<"2????";
 			}
 
 		return p;
