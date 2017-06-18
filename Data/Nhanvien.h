@@ -105,8 +105,8 @@ bool Find_NV(Tree root,char* MaNV){
 	bool check = false;
 	if(root == NULL ) return false;
 	if(strcmp(MaNV , root->nv.MANV) == 0) return true;
-	if(strcmp(MaNV , root->nv.MANV) > 0 ) return (check | Find_NV(root->right,MaNV)); 
-	else return (check | Find_NV(root->left,MaNV));
+	 return (check | Find_NV(root->right,MaNV)); 
+	 return (check | Find_NV(root->left,MaNV));
 }
 
 
@@ -191,6 +191,7 @@ void delKey(Tree &t, char* MaNV)     // xoa nut co key x
             }
             p->nv = q->nv;
             s->right = q->left;
+            cout<<"node||::"<<q->nv.MANV<<endl;
             delete q;
         }
     }
@@ -282,11 +283,13 @@ nhanvien_error Check_NV_new(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], cha
 			}
 		return p;
 }
-nhanvien_error Check_NV_seclect(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], char Phai[],int check_nv)
+nhanvien_error Check_NV_seclect(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], char Phai[],char buf[])
 {
 		nhanvien_error p;
 		// xu li ma vat tu
-		if(Find_NV(DataNhanvien._nhanvien,MaNV)==true && check_nv != Find_pos_NV(DataNhanvien._nhanvien,MaNV)) {
+		cout<<"MaNV:::"<<MaNV<<"buf:::"<<buf<<endl;
+		if(strcmp(MaNV,buf)==0) cout<<"dung"<<endl;
+		if(Find_NV(DataNhanvien._nhanvien,MaNV)==true &&  strcmp(buf , MaNV)!=0) {
 			p.error_st[0] = "Vat tu da ton tai\0";
 			p.check = false;
 			p.error_color[0] = 4;

@@ -715,7 +715,7 @@ void save_NV_seclect()
 	nhanvien_error error;
 	Nhanvien pre_add ;
 	cout<<"listcontent 2 ::::"<<NV_Select.List_content[0]<<" listcontent 1 :::"<<NV_Select.List_content[1]<<endl;
-	error = Check_NV_seclect(pre_add, NV_Select.List_content[0], NV_Select.List_content[1], NV_Select.List_content[2], NV_Select.List_content[3],ps);
+	error = Check_NV_seclect(pre_add, NV_Select.List_content[0], NV_Select.List_content[1], NV_Select.List_content[2], NV_Select.List_content[3],buf.MANV);
 	if(error.check)
 	{
 	
