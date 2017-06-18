@@ -267,24 +267,24 @@ struct hoadon_error{
 int dayofmonth[]={0,31,28,31,30,31,30,31,31,30,31,30,31};
 hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], char nam[], char loai,char MaNV[])
 {
-	int x = 4;
+//	int x = 4;
 		hoadon_error p;
 		for(int i =0;i<6;i++)
 		{
 			p.error_st[i]="\0";
 			p.error_color[i]=4;
 		}
-		cout <<x++<<endl;
+	//	cout <<x++<<endl;
 		int month_t = parseInt(thang);
-		cout <<"m::"<<month_t <<endl;
+	//	cout <<"m::"<<month_t <<endl;
 		int year_t  = parseInt(nam);
-		cout <<"y::" <<year_t<<endl;
+	//	cout <<"y::" <<year_t<<endl;
 		int day_t   = parseInt(ngay);
-		cout <<"d::"<<day_t<<endl;
-		cout <<x++<<endl;
+	//	cout <<"d::"<<day_t<<endl;
+	//	cout <<x++<<endl;
 		// xu li ma vat tu
 		if(strlen(soHD)==0){
-			cout <<x++<<endl;
+		//	cout <<x++<<endl;
 			p.error_st[0] = "Khong duoc rong\0";
 			p.check = false;
 			p.error_color[0] = 4;
@@ -299,25 +299,24 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 			}
 		}
 		// xu li nam
-		cout <<x++<<endl;
+	//	cout <<x++<<endl;
 			int len_nam = strlen(nam);
-			 {
-				if(len_nam<4){
-					for(int i=3;i>=4-len_nam;i--){
-						nam[i] = nam[i-1];
-					}
-					for(int i=0;i<4-len_nam;i++){
-						nam[i] ='0';
-					}
-				}
-			}
+			if(len_nam == 0){
+			 	p.error_st[1] = "Ngay khong hop le\0";
+						p.check = false;
+						p.error_color[1] = 4;
+						return p;
+			 }
+			 
 		//xu li thang
-		cout <<x++<<endl;
+	//	cout <<"error_st:::"<<p.error_st[1]<<endl;
 			int len_thang = strlen(thang);
 		 {
-				if(strlen(thang)==1){
-					thang [1] = thang[0];
-					thang [0] = '0';
+				if(month_t == 0){
+					p.error_st[1] = "Ngay khong hop le\0";
+						p.check = false;
+						p.error_color[1] = 4;
+						return p;
 				}
 				else{
 					if(parseInt(thang)>=12){
@@ -328,14 +327,16 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 					}
 				}
 			}
-		
+		//cout <<"error_st:::"<<p.error_st[1]<<endl;
 		// xu li ngay
-		cout <<x++<<endl;
+	//	cout <<x++<<endl;
 			int len_ngay = strlen(ngay);
 			{
-				if(len_ngay==1){
-					ngay[1] = ngay[0];
-					ngay[0] = '0';
+				if(day_t == 0){
+					p.error_st[1] = "Ngay khong hop le\0";
+						p.check = false;
+						p.error_color[1] = 4;
+						return p;
 				}
 				else{
 					int get = dayofmonth[month_t];
@@ -348,21 +349,25 @@ hoadon_error Check_HD_new(NodeHD* &hd, char soHD[], char ngay[], char thang[], c
 					}
 				}
 			}
+		//	cout <<"error_st:::"<<p.error_st[1]<<endl;
 		// xu li loai 
-		cout <<x++<<endl;
+	//	cout <<x++<<endl;
 		if(loai!='N' && loai !='X') {
 			p.error_st[4] = "Khong hop le    \0";
 			p.check = false;
 			p.error_color[4] = 4;
 			return p;
 		}
-		cout <<x++<<endl;
+		//cout <<"error_st:::4"<<p.error_st[4]<<endl;
+		//	if(Find_NV(DataNhanvien._nhanvien,MaNV)) cout<<"tim thay ::::";
 			if(!Find_NV(DataNhanvien._nhanvien,MaNV)) {
+			//	cout<<"deo tim thay::";
 			p.error_st[5] = "Khong tim thay  \0";
 			p.check = false;
 			p.error_color[5] = 4;
 			return p;
 			}
+		//	cout <<"error_st:::"<<p.error_st[5]<<endl;
 			if(p.check == true){
 			
 			strcpy(hd->soHD, soHD);

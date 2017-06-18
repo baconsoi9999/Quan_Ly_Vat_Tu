@@ -8,8 +8,13 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
+<<<<<<< HEAD
 FILEVERSION 2,0,2,1772
 PRODUCTVERSION 2,0,2,1772
+=======
+FILEVERSION 2,0,2,1793
+PRODUCTVERSION 2,0,2,1793
+>>>>>>> 35fdbb27e223a03beb0b0f399838de4819172221
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -17,14 +22,22 @@ FILETYPE VFT_APP
     BLOCK "080904E4"
     {
       VALUE "CompanyName", ""
+<<<<<<< HEAD
       VALUE "FileVersion", "2.0.2.1772"
+=======
+      VALUE "FileVersion", "2.0.2.1793"
+>>>>>>> 35fdbb27e223a03beb0b0f399838de4819172221
       VALUE "FileDescription", "Developed using the Dev-C++ IDE"
       VALUE "InternalName", ""
       VALUE "LegalCopyright", ""
       VALUE "LegalTrademarks", ""
       VALUE "OriginalFilename", ""
       VALUE "ProductName", ""
+<<<<<<< HEAD
       VALUE "ProductVersion", "2.0.2.1772"
+=======
+      VALUE "ProductVersion", "2.0.2.1793"
+>>>>>>> 35fdbb27e223a03beb0b0f399838de4819172221
     }
   }
   BLOCK "VarFileInfo"

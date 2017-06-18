@@ -1,5 +1,5 @@
 	#include "Data\ERRORCHECK.h"
-	#include <E:\#PTIT CAU TRUC DU LIEU GIAI THUAT\de tai CTDLGT\Quan_Ly_Vat_Tu\conponentBGI.h>
+	#include <F:\commit2\Quan_Ly_Vat_Tu\conponentBGI.h>
 	#include <iostream>
 	#include <string.h>
 	

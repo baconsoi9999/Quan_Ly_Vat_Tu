@@ -105,9 +105,11 @@ void addNhanvien(Tree &root, Nhanvien nv){
 	DataNhanvien.num++;
 }
 bool Find_NV(Tree root,char* MaNV){
+	cout<<"????"<<endl;
 	if(root == NULL ) return false;
 	if(strcmp(MaNV , root->nv.MANV) == 0) return true;
-	 return  (Find_NV(root->right,MaNV) | Find_NV(root->left,MaNV));
+	 else return  (Find_NV(root->right,MaNV) | Find_NV(root->left,MaNV));
+	 
 }
 
 
