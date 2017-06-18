@@ -1061,7 +1061,7 @@ void Lap_HD_TT_save()
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,1);
 		setcolor(error.error_color[0]);
 		outtextxy(Lap_HD_TT.left+5,Lap_HD_TT.bottom+5,error.error_st[0]);
-		for(int i = 1; i<4;i++)
+		for(int i = 1; i<6;i++)
 		{
 			setcolor(error.error_color[i]);
 			outtextxy(Lap_HD_TT.left+NV_new_c_line[i-1],Lap_HD_TT.bottom+5,error.error_st[i]);
