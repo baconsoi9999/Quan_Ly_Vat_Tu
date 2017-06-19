@@ -315,6 +315,7 @@ void ScannerLoai(char s[],int max, int px ,int py,int ID)
 struct Button
 {
 	short int ID;
+	bool lock = true;
 	int left;
 	int top;
 	int right;
@@ -337,9 +338,11 @@ struct Button
 
 	void show()
 	{
-		setfillstyle(1,color);
+		if(lock) setfillstyle(1,color);
+		else setfillstyle(1,COLOR(100,100,100));
 		bar(left, top, right, bottom);
-		setbkcolor(color);
+		if(lock) setbkcolor(color);
+		else setbkcolor(COLOR(100,100,100));
 		setcolor(15);
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,font_size);
 		outtextxy(left+5,(top+bottom- 8*font_size)/2,tile);	

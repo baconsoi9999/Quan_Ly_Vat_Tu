@@ -1,5 +1,5 @@
 	#include "Data\ERRORCHECK.h"
-	#include <F:\commit2\Quan_Ly_Vat_Tu\conponentBGI.h>
+	#include <E:\#PTIT CAU TRUC DU LIEU GIAI THUAT\de tai CTDLGT\Quan_Ly_Vat_Tu\conponentBGI.h>
 	#include <iostream>
 	#include <string.h>
 	
@@ -75,18 +75,25 @@ NUMBER OF LINES: 10
 */
 Button Lap_HD_Button(301,APP_LEFT+50,APP_TOP+150,APP_LEFT+50+186,APP_TOP+200,COLOR(0,255,0),2,"LAP HOA DON\0");
 Panel Lap_HD_Panel(APP_LEFT, APP_TOP+39, APP_RIGHT, APP_BOTTOM);
-Frame Lap_HD_Frame(APP_LEFT, APP_TOP+39,APP_RIGHT,APP_BOTTOM-130,COLOR(255,255,255));
+
 
 unsigned short int Lap_HD_TT_c_Line[5]={266,356,446,536,626};
 char* Lap_HD_TT_c_Tile[6]={"So Hoa don\0","Ngay\0","Thang\0","Nam\0", "Loai\0", "Ma nhan vien lap\0"};
 Array_Table Lap_HD_TT(APP_LEFT+5, APP_TOP+39+50, APP_LEFT+897, APP_TOP+110+50,2,COLOR(234,244,253),COLOR(0,255,0),6,Lap_HD_TT_c_Line,Lap_HD_TT_c_Tile);
 Panel Lap_HD_TT_OK_panel(APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT.bottom);
 Button Lap_HD_TT_OK(302,APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT.bottom,COLOR(0,0,220),2," OK \0");
+
+Button Lap_HD_final_OK(309,APP_LEFT+353,APP_BOTTOM-100,APP_LEFT+543,APP_BOTTOM-30,COLOR(0,0,220),2,"  LAP HD\0");
+Button Lap_HD_add_VT(310,APP_LEFT+553,APP_BOTTOM-100,APP_LEFT+743,APP_BOTTOM-30,COLOR(0,0,220),2,"THEM VAT TU\0");
+Button Lap_HD_cancel(311,APP_LEFT+753,APP_BOTTOM-100,APP_LEFT+943,APP_BOTTOM-30,COLOR(0,0,220),2,"    HUY\0");
+
 unsigned short int CT_HD_c_Line[4]={74,442,596,750};
 char* CT_HD_c_Tile[5]= {"STT\0","Ma Vat tu\0","So luong\0","Dong gia\0", "%VAT"};
 char* CT_HD_l_tile[10]={"1\0","2\0","3\0","4\0","5\0"};
 Book CT_HD_Book(APP_LEFT+5,APP_TOP+160+50,APP_LEFT+850, 2 ,COLOR(234,244,253),COLOR(83,174,242),5,5,CT_HD_c_Line,CT_HD_c_Tile, CT_HD_l_tile);
-Dialog Input_Date(307,308,APP_LEFT+503,APP_TOP+184,APP_LEFT+803,APP_TOP+384,15,"Nhap ngay");
+unsigned short int CT_HD_new_c_Line[3]={388,562,736};
+char* CT_HD_new_Tile[4]={"Ma Vat tu\0","So luong\0","Dong gia\0", "%VAT"};
+Array_Table CT_HD_new(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0),4,CT_HD_c_Line,CT_HD_c_Tile);
 /*
 FONT SIZE: 1
 LINE SPACE: 39
@@ -121,7 +128,14 @@ void main_frame()
 	settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
 	Exit_App.show();
 }
-
+void Lap_HD_frame()
+{
+	Lap_HD_Panel.Show();
+	setfillstyle(1, 15);
+	bar(APP_LEFT, APP_TOP+39,APP_RIGHT,APP_BOTTOM-130);
+	setfillstyle(1,COLOR(128,128,255));
+	bar(APP_LEFT,APP_BOTTOM-130,APP_RIGHT,APP_BOTTOM);
+}
 void Show_Menu_List()
 {
 
@@ -1005,6 +1019,7 @@ void Show_NV()
 
 void Lap_HD_TT_SoHD()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1013,6 +1028,7 @@ void Lap_HD_TT_SoHD()
 }
 void Lap_HD_TT_Ngay()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1021,6 +1037,7 @@ void Lap_HD_TT_Ngay()
 }
 void Lap_HD_TT_Thang()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1029,6 +1046,7 @@ void Lap_HD_TT_Thang()
 }
 void Lap_HD_TT_Nam()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1037,6 +1055,7 @@ void Lap_HD_TT_Nam()
 }
 void Lap_HD_Loai()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1045,6 +1064,7 @@ void Lap_HD_Loai()
 }
 void Lap_HD_TT_MaNV()
 {
+	if(Lap_HD_TT.lock==false) return;
 	setbkcolor(VT_new.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
@@ -1059,8 +1079,8 @@ void Lap_HD_TT_save()
 	error = Check_HD_new(tt,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][1],Lap_HD_TT.List_content[5]);
 	if(error.check)
 	{
-		cout<<"panel cancel";
-		Lap_HD_TT_OK_panel.cancel();
+		Lap_HD_TT.lock=false;
+		Lap_HD_TT_OK_panel.cancel();		
 	}
 	else 
 	{
@@ -1079,17 +1099,28 @@ void Lap_HD_TT_save()
 }
 void Lap_HD()
 {
-	Lap_HD_Panel.Show();
-	Lap_HD_Frame.Show();
+	
+	Lap_HD_final_OK.lock = false;
+	Lap_HD_add_VT.lock = false;
+	
+	Lap_HD_frame();
+	
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,3);
-	setbkcolor(Lap_HD_Frame.color);
+	setbkcolor(15);
 	setcolor(0);
 	outtextxy((APP_LEFT+APP_RIGHT-8*3*11)/2,APP_TOP+45,"LAP HOA DON");
+	Lap_HD_final_OK.show();
+	Lap_HD_add_VT.show();
+	Lap_HD_cancel.show();
+	Lap_HD_TT.free_Table();
 	Lap_HD_TT.show();
 	Lap_HD_TT_OK_panel.Show();
 	Lap_HD_TT_OK.show();
-	CT_HD_Book.show();
-	
+	CT_HD_Book.show();	
+}
+void cancel_Lap_HD()
+{
+	Lap_HD_Panel.cancel();
 }
 
 void Show_HD ()
@@ -1098,6 +1129,7 @@ void Show_HD ()
 	CURRENT_STRAGE = 300;
 	main_frame();
 	menu_slash("Hoa don");
+	
 	Lap_HD_Button.show();
 	
 	cout <<"hoa don page open" <<endl; // Delete this line when release!!!
@@ -1238,7 +1270,7 @@ void GUI_Init()
 	F_R[Lap_HD_TT.List_content_ID[4]] = Lap_HD_Loai;
 	Lap_HD_TT.List_content_ID[5] = 308;
 	F_R[Lap_HD_TT.List_content_ID[5]] =  Lap_HD_TT_MaNV;
-
+	F_R[Lap_HD_cancel.ID] = Show_HD;
 	
 	/*Dic ID*/
 

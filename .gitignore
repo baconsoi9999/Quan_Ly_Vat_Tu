@@ -1,3 +1,8 @@
 
 main.o
 QuanLyVatTu.exe
+*.res
+QuanLyVatTu_private.h
+QuanLyVatTu.layout
+QuanLyVatTu.exe
+main.o
