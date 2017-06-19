@@ -1,8 +1,16 @@
 
 main.o
 QuanLyVatTu.exe
+<<<<<<< HEAD
 main.o
 QuanLyVatTu.exe
 *.rc
 QuanLyVatTu_private.res
 QuanLyVatTu_private.h
+=======
+*.res
+QuanLyVatTu_private.h
+QuanLyVatTu.layout
+QuanLyVatTu.exe
+main.o
+>>>>>>> bdcd877aa36c045865b2b63a9b34cdd95a089e8f
