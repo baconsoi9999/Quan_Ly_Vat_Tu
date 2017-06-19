@@ -374,13 +374,13 @@ nhanvien_error Check_NV_new(Nhanvien &nv,char MaNV[], char Ho[], char Ten[], cha
 
 			if(p.check == true){
 
-			strcpy(nv.MANV, MaNV);
+			strcpy(nv.thongtin.MANV, MaNV);
 
-			strcpy(nv.HO, Ho);
+			strcpy(nv.thongtin.HO, Ho);
 
-			strcpy(nv.TEN , Ten);
+			strcpy(nv.thongtin.TEN , Ten);
 
-			strcpy(nv.PHAI,Phai);
+			strcpy(nv.thongtin.PHAI,Phai);
 
 			}
 
@@ -486,13 +486,13 @@ nhanvien_error Check_NV_seclect(Nhanvien &nv,char MaNV[], char Ho[], char Ten[],
 
 				if(p.check == true){
 
-			strcpy(nv.MANV, MaNV);	
+			strcpy(nv.thongtin.MANV, MaNV);	
 
-			strcpy(nv.HO, Ho);
+			strcpy(nv.thongtin.HO, Ho);
 
-			strcpy(nv.TEN, Ten);
+			strcpy(nv.thongtin.TEN, Ten);
 
-			strcpy(nv.PHAI,Phai);
+			strcpy(nv.thongtin.PHAI,Phai);
 
 		}
 
@@ -506,7 +506,7 @@ bool Find_HD(Tree &root,char soHD[]){
 
 	if(root == NULL) return false;
 
-	cout<<"1:::"<<root->nv.MANV<<endl;
+//	cout<<"1:::"<<root->nv.MANV<<endl;
 
 	for(NodeHD* p = root->nv.nv_HOADON.hdHead;p!=NULL;p = p->_next){
 
