@@ -530,7 +530,7 @@ struct hoadon_error{
 
 int dayofmonth[]={0,31,28,31,30,31,30,31,31,30,31,30,31};
 
-hoadon_error Check_HD_new(Thongtin_HD hd, char SOHD[], char ngay[], char thang[], char nam[], char loai,char MaNV[])
+hoadon_error Check_HD_new(Thongtin_HD &hd, char SOHD[], char ngay[], char thang[], char nam[], char loai,char MaNV[])
 {
 
 //	int x = 4;
@@ -770,7 +770,7 @@ struct ct_hoadon_error{
 
 };
 
-ct_hoadon_error Check_CT_new(NodeCT* &hd,char loai,char MaVT[],char soluong[],char dongia[],char VAT[])
+ct_hoadon_error Check_CT_new(Thongtin_CT &hd,char loai,char MaVT[],char soluong[],char dongia[],char VAT[])
 
 {
 
