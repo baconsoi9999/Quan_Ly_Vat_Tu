@@ -713,7 +713,7 @@ cout <<"::::>>" ;
 }
 void cancel_NV_seclect()
 {
-	VT_Book.TOTAL_PAGE=  DataVattu.num/10+ (DataVattu.num%10!=0) ;
+	VT_Book.TOTAL_PAGE=  DataNhanvien.num/10+ (DataNhanvien.num%10!=0) ;
 	VT_new.free_Table();
 	VT_new.cancel();
 	active_bar.cancel();
@@ -731,11 +731,17 @@ void save_NV_seclect()
 	{
 	
 	cancel_NV_seclect();
-	Delete_NV(DataNhanvien._nhanvien,ps);
+	if(Find_NV(DataNhanvien._nhanvien,buf.MANV)) cout<<"1?\n";
+	//cout<<"buf::"<<buf.MANV<<endl;
+//	cout<<"Data:::"<<DataNhanvien.num<<endl;
+	delKey(DataNhanvien._nhanvien,buf.MANV);
+	//cout<<"Data:::"<<--DataNhanvien.num<<endl;
 	addNhanvien(DataNhanvien._nhanvien,pre_add);
+	
 	NV_Book.show();
 	setbkcolor(NV_Book.color);
 	setcolor(0);
+//	cout<<"data:::"<<DataNhanvien.num<<endl;
 	PrintNhanvien(DataNhanvien._nhanvien,NV_Book.CURENT_PAGE,NV_Book.left+5,NV_Book.top_main+NV_Book.CONTENT_SPACE,NV_Book_c_line);
 	} 
 	else 

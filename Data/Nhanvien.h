@@ -59,15 +59,15 @@ using BGI
 */
 void XuatNhanvien(Nhanvien p,int x, int y,unsigned short int c_line[]){
 	outtextxy(x+c_line[0],y,p.MANV);
-//	cout<< p.MANV<<endl;
-//	cout<< "Ho :";
-//	cout<< p.HO<<endl;
+	cout<< p.MANV<<endl;
+	cout<< "Ho :";
+	cout<< p.HO<<endl;
 	outtextxy(x+c_line[1],y,p.HO);
-//	cout<< "Ten :";
-//	cout<<  p.TEN<<endl;
+	cout<< "Ten :";
+	cout<<  p.TEN<<endl;
 	outtextxy(x+c_line[2],y,p.TEN);
-//	cout<< "Gioi tinh :"; //su dung form list button voi 2 lua chon Nam/Nu 
-//	cout<< p.PHAI<<endl;
+	cout<< "Gioi tinh :"; //su dung form list button voi 2 lua chon Nam/Nu 
+	cout<< p.PHAI<<endl;
 	outtextxy(x+c_line[3],y,p.PHAI);
 }
 void init_nv(Tree &root){
@@ -103,6 +103,7 @@ void addNhanvien(Tree &root, Nhanvien nv){
 
 	Insert_NV(p,root);
 	DataNhanvien.num++;
+	cout<<"Data add::"<<DataNhanvien.num<<endl;
 }
 bool Find_NV(Tree root,char* MaNV){
 	cout<<"????"<<endl;
@@ -160,31 +161,38 @@ Nhanvien searchTreebyNum(Tree root,int n){
 	//	cout<<"2????\n"<<n<<endl;
 		return give;
 }
-void delKey(Tree &t, char* MaNV)     // xoa nut co key x
-{
+void delKey(Tree &t, char MaNV[])     // xoa nut co key x
+{	
+cout<<"cmp::"<<strcmp(MaNV,t->nv.MANV)<<endl;
     if (t==NULL) return ;
-    else if (strcmp(MaNV,t->nv.MANV)>0) return delKey(t->right, MaNV);
-    else if (strcmp(MaNV,t->nv.MANV)<0) return delKey(t->left, MaNV);
+    else if (strcmp(MaNV,t->nv.MANV)>0)  delKey(t->right, MaNV);
+    else if (strcmp(MaNV,t->nv.MANV)<0)  delKey(t->left, MaNV);
     else // T->key == x
     {
+    	cout<<"vao\n";
         NodeNV *p = t;
+        cout<<"node bi xoa ||::"<<t->nv.MANV<<endl;
         if (t->left == NULL) t = t->right;    // Node chi co cay con phai
-        else if (t->right == NULL) t = t->left;   // Node chi co cay con trai
-        else // Node co ca 2 con
-        {
-            NodeNV *s = t, *q = s->left;
-            // S la cha cua Q, Q la Node phai nhat cua cay con trai cua P
-            while (q->right != NULL)
-            {
-                s = q;
-                q = q->right;
-            }
-            p->nv = q->nv;
-            s->right = q->left;
-            cout<<"node||::"<<q->nv.MANV<<endl;
-            delete q;
-        }
-    }
+        	else if (t->right == NULL) t = t->left;   // Node chi co cay con trai
+        		else // Node co ca 2 con
+			    {
+			    //	bool flag = false;
+			       NodeNV *s = t, *q = t->left;
+			       // S la cha cua Q, Q la Node phai nhat cua cay con trai cua P
+			       while (q->right != NULL)
+			        {
+			           s = q;
+			           q = q->right;
+			    	}
+			    	
+			        t->nv = q->nv;
+			        if(q->left == NULL) t->left =NULL;
+			        else s->right = q->left;
+			        delete q;
+			    }
+    cout<<"node thay the ||::"<<t->nv.MANV<<endl;
+	}
+   
 }
 void Delete_NV(Tree &root,int n){
 	 i = 1;
