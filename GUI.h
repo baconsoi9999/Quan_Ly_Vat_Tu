@@ -2,15 +2,17 @@
 	#include <E:\#PTIT CAU TRUC DU LIEU GIAI THUAT\de tai CTDLGT\Quan_Ly_Vat_Tu\conponentBGI.h>
 	#include <iostream>
 	#include <string.h>
-	
+	//#include "Data\topexport.h"
 	
 	using namespace std;
 	 // Just using for testing
 
 int CURRENT_STRAGE;	
-const unsigned int VT_ID=100,NV_ID=200,HD_ID=300;
+const unsigned int VT_ID=100,NV_ID=200,HD_ID=300,TOP_10_VT_ID = 400;
 int ps;
 Thongtin_HD tt;
+CT_HOADON ct_hd;
+
 Frame m_f(APP_LEFT, APP_TOP, APP_RIGHT, APP_BOTTOM,COLOR(255,255,255));
 
 Panel active_bar(APP_LEFT,APP_BOTTOM-130,APP_RIGHT,APP_BOTTOM);
@@ -23,7 +25,7 @@ Button New_Button(0, Menu_Button.right+10, APP_TOP,Menu_Button.right+160, APP_TO
 
 Button Save_Button(0,New_Button.right +5, APP_TOP, New_Button.right +165, APP_TOP+39, COLOR(0,0,220),3," SAVE\0");
 
-char*Menu_Content_Tile[5]={"Trang chu\0","Quan ly vat tu\0","Quan ly nhan vien\0","Quan ly hoa don\0","Tra cuu ma"};
+char*Menu_Content_Tile[5]={"Trang chu\0","Quan ly vat tu\0","Quan ly nhan vien\0","Quan ly hoa don\0","Top 10 VT xuat"};
 Tab_List Menu_Tab( Menu_Button.left, Menu_Button.bottom, Menu_Button.right,2, 15 , 5, Menu_Content_Tile);	
 /*
 FONT SIZE: 2
@@ -74,6 +76,8 @@ NUMBER OF LINES: 10
 *****
 */
 Button Lap_HD_Button(301,APP_LEFT+50,APP_TOP+150,APP_LEFT+50+186,APP_TOP+200,COLOR(0,255,0),2,"LAP HOA DON\0");
+Button Print_HD_by_SHD_button(330,APP_LEFT+50+196,APP_TOP+150,APP_LEFT+50+496,APP_TOP+200,COLOR(0,255,0),2," IN HD THEO SO HD\0");
+
 Panel Lap_HD_Panel(APP_LEFT, APP_TOP+39, APP_RIGHT, APP_BOTTOM);
 
 
@@ -84,6 +88,8 @@ Panel Lap_HD_TT_OK_panel(APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT
 Button Lap_HD_TT_OK(302,APP_LEFT+903,Lap_HD_TT.top_main, APP_LEFT+977,Lap_HD_TT.bottom,COLOR(0,0,220),2," OK \0");
 
 Button Lap_HD_final_OK(309,APP_LEFT+353,APP_BOTTOM-100,APP_LEFT+543,APP_BOTTOM-30,COLOR(0,0,220),2,"  LAP HD\0");
+
+
 Button Lap_HD_add_VT(310,APP_LEFT+553,APP_BOTTOM-100,APP_LEFT+743,APP_BOTTOM-30,COLOR(0,0,220),2,"THEM VAT TU\0");
 Button Lap_HD_cancel(311,APP_LEFT+753,APP_BOTTOM-100,APP_LEFT+943,APP_BOTTOM-30,COLOR(0,0,220),2,"    HUY\0");
 
@@ -93,15 +99,34 @@ char* CT_HD_l_tile[10]={"1\0","2\0","3\0","4\0","5\0"};
 Book CT_HD_Book(APP_LEFT+5,APP_TOP+160+50,APP_LEFT+850, 2 ,COLOR(234,244,253),COLOR(83,174,242),5,5,CT_HD_c_Line,CT_HD_c_Tile, CT_HD_l_tile);
 unsigned short int CT_HD_new_c_Line[3]={388,562,736};
 char* CT_HD_new_Tile[4]={"Ma Vat tu\0","So luong\0","Dong gia\0", "%VAT"};
-Array_Table CT_HD_new(APP_LEFT+5, APP_BOTTOM-120, APP_RIGHT-100, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(0,255,0),4,CT_HD_c_Line,CT_HD_c_Tile);
+Array_Table CT_HD_new(APP_LEFT+5, APP_BOTTOM-120, APP_LEFT+850, APP_BOTTOM-40, 2,COLOR(234,244,253),COLOR(83,174,242),4,CT_HD_new_c_Line,CT_HD_new_Tile);
+Button CT_HD_new_save(316,APP_LEFT+860, APP_BOTTOM-120,APP_LEFT+934,APP_BOTTOM-82,COLOR(0,0,220),2," OK\0");
+Button CT_HD_new_cancel(317,APP_LEFT+860,APP_BOTTOM-78,APP_LEFT+934,APP_BOTTOM-40,COLOR(0,0,220),2," HUY\0");
+
+unsigned short int search_HD_by_SHD_c_Line[1]={};
+char* search_HD_by_SHD_c_Tile[1]={"Nhap So hoa don\0"};
+Array_Table search_HD_by_SHD((APP_RIGHT+APP_LEFT-560)/2,APP_TOP+210,(APP_RIGHT+APP_LEFT+400)/2,APP_TOP+300,2,15,COLOR(83,174,242),1,search_HD_by_SHD_c_Line,search_HD_by_SHD_c_Tile);
+Array_Table return_search_HD_TT(APP_LEFT+5, APP_TOP+39+50, APP_LEFT+631, APP_TOP+110+50,2,COLOR(234,244,253),COLOR(0,255,0),5,Lap_HD_TT_c_Line,Lap_HD_TT_c_Tile);
+Button search_HD_by_SHD_OK(331,(APP_RIGHT+APP_LEFT+400)/2+10,APP_TOP+210+36,(APP_RIGHT+APP_LEFT+400)/2+80,APP_TOP+300,COLOR(0,0,200),2,"TIM\0");
+Button search_HD_by_SHD_exit(HD_ID,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,COLOR(0,0,200),2,"THOAT\0");
+Book return_search_CT_HD_Book(APP_LEFT+5,APP_TOP+160+50,APP_LEFT+850, 2 ,COLOR(234,244,253),COLOR(83,174,242),5,5,CT_HD_c_Line,CT_HD_c_Tile, CT_HD_l_tile);
 /*
 FONT SIZE: 1
 LINE SPACE: 39
 NUMBER OF LINES: 10
 *****
 */
-Dialog Dic_Dialog(401,402,APP_LEFT+5, Menu_Button.bottom+5, APP_RIGHT-5, APP_BOTTOM-135,COLOR(255,255,255),"Bang tra cuu vat tu\0");
+unsigned short int Top_E_Begin_c_line[3]= {133,266,266};
+char* Top_E_Begin_c_Tile[3]={"Ngay\0","Thang\0","Nam\0"};
+Array_Table Top_E_Begin((APP_RIGHT+APP_LEFT)/2-400,APP_TOP+210,(APP_RIGHT+APP_LEFT)/2,APP_TOP+300,2,15,COLOR(83,174,242),3,Top_E_Begin_c_line,Top_E_Begin_c_Tile);
+Array_Table Top_E_End((APP_RIGHT+APP_LEFT)/2+138,APP_TOP+210,(APP_RIGHT+APP_LEFT)/2+538,APP_TOP+300,2,15,COLOR(83,174,242),3,Top_E_Begin_c_line,Top_E_Begin_c_Tile);
+Button Top_E_OK(407,(APP_RIGHT+APP_LEFT)/2-50,APP_TOP+400,(APP_RIGHT+APP_LEFT)/2+50,APP_TOP+450,COLOR(0,0,200),2," XEM\0");
+Button Top_E_exit(TOP_10_VT_ID,APP_RIGHT-95,APP_BOTTOM-78,APP_RIGHT-5,APP_BOTTOM-40,COLOR(0,0,200),2,"THOAT\0");
 
+unsigned short int Top_E_Book_c_line[3]={100,449,913};
+char* Top_E_Book_c_tile[4]={"STT\0","Ma Vat tu\0","Ten Vat tu\0","So Luong\0"};
+char* Top_E_Book_l_tile[10]= {"1\0","2\0","3\0","4\0","5\0","6\0","7\0","8\0","9\0","10\0"};
+Book Top_E_Book(APP_LEFT+5, Menu_Button.bottom+5, APP_RIGHT-5 ,2 ,COLOR(234,244,253),COLOR(83,174,242), 10,4,Top_E_Book_c_line,Top_E_Book_c_tile,Top_E_Book_l_tile);
 void menu_slash(char* menu_content_tile)
 {
 	setcolor(15);
@@ -130,6 +155,7 @@ void main_frame()
 }
 void Lap_HD_frame()
 {
+	if(Lap_HD_Panel.is_active) Lap_HD_Panel.cancel();
 	Lap_HD_Panel.Show();
 	setfillstyle(1, 15);
 	bar(APP_LEFT, APP_TOP+39,APP_RIGHT,APP_BOTTOM-130);
@@ -1020,7 +1046,7 @@ void Show_NV()
 void Lap_HD_TT_SoHD()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1029,7 +1055,7 @@ void Lap_HD_TT_SoHD()
 void Lap_HD_TT_Ngay()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1038,7 +1064,7 @@ void Lap_HD_TT_Ngay()
 void Lap_HD_TT_Thang()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1047,7 +1073,7 @@ void Lap_HD_TT_Thang()
 void Lap_HD_TT_Nam()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1056,7 +1082,7 @@ void Lap_HD_TT_Nam()
 void Lap_HD_Loai()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1065,7 +1091,7 @@ void Lap_HD_Loai()
 void Lap_HD_TT_MaNV()
 {
 	if(Lap_HD_TT.lock==false) return;
-	setbkcolor(VT_new.color);
+	setbkcolor(Lap_HD_TT.color);
 	setcolor(0);//BLACK
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,VT_new.font_size);
 	clearStream();
@@ -1076,15 +1102,18 @@ void Lap_HD_TT_save()
 
 	hoadon_error error;
 	cout<<"::listcontent::"<<Lap_HD_TT.List_content[0]<<endl;
-	error = Check_HD_new(tt,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][1],Lap_HD_TT.List_content[5]);
+	error = Check_HD_new(tt,Lap_HD_TT.List_content[0],Lap_HD_TT.List_content[1],Lap_HD_TT.List_content[2],Lap_HD_TT.List_content[3],Lap_HD_TT.List_content[4][0],Lap_HD_TT.List_content[5]);
 	if(error.check)
 	{
 		Lap_HD_TT.lock=false;
-		Lap_HD_TT_OK_panel.cancel();		
+		Lap_HD_TT_OK_panel.cancel();
+		Lap_HD_add_VT.lock = true;
+		Lap_HD_add_VT.show();		
+		cout<<"loai3::: "<<tt.loai<<endl;
 	}
 	else 
 	{
-		setbkcolor(getpixel(NV_new.left,NV_new.bottom+5));
+		setbkcolor(getpixel(Lap_HD_TT.left,Lap_HD_TT.bottom+5));
 		setcolor(4);
 		settextstyle(DEFAULT_FONT, HORIZ_DIR,1);
 		setcolor(error.error_color[0]);
@@ -1102,9 +1131,8 @@ void Lap_HD()
 	
 	Lap_HD_final_OK.lock = false;
 	Lap_HD_add_VT.lock = false;
-	
 	Lap_HD_frame();
-	
+	init_ct(ct_hd);
 	settextstyle(DEFAULT_FONT, HORIZ_DIR,3);
 	setbkcolor(15);
 	setcolor(0);
@@ -1120,9 +1148,227 @@ void Lap_HD()
 }
 void cancel_Lap_HD()
 {
+	
 	Lap_HD_Panel.cancel();
 }
 
+void new_CT_HD_MVT()
+{
+	setbkcolor(CT_HD_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	clearStream();
+	ScannerCode(CT_HD_new.List_content[0],15,CT_HD_new.left+5,(CT_HD_new.top_main+CT_HD_new.bottom-textheight("S"))/2,CT_HD_new.List_content_ID[0]);
+}
+void new_CT_HD_SL()
+{
+	
+	setbkcolor(CT_HD_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	clearStream();
+	ScannerNum(CT_HD_new.List_content[1],9,CT_HD_new.left+CT_HD_new.column[0]+5,(CT_HD_new.top_main+CT_HD_new.bottom-textheight("S"))/2,CT_HD_new.List_content_ID[1]);
+}
+void new_CT_HD_DG()
+{
+	setbkcolor(CT_HD_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	clearStream();
+	ScannerNum(CT_HD_new.List_content[2],9,CT_HD_new.left+CT_HD_new.column[1]+5,(CT_HD_new.top_main+CT_HD_new.bottom-textheight("S"))/2,CT_HD_new.List_content_ID[2]);
+}
+void new_CT_HD_VAT()
+{
+	setbkcolor(CT_HD_new.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	clearStream();
+	ScannerNum(CT_HD_new.List_content[3],3,CT_HD_new.left+CT_HD_new.column[2]+5,(CT_HD_new.top_main+CT_HD_new.bottom-textheight("S"))/2,CT_HD_new.List_content_ID[3]);
+}
+void prev_CT_HD_Book()
+{
+	CT_HD_Book.prev_PAGE();
+	CT_HD_Book.show();
+	Print_CT_HD(ct_hd,CT_HD_Book.left+5,CT_HD_Book.top_main+CT_HD_Book.CONTENT_SPACE,CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+}
+void next_CT_HD_Book()
+{
+	CT_HD_Book.next_PAGE();
+	CT_HD_Book.show();
+	Print_CT_HD(ct_hd,CT_HD_Book.left+5,CT_HD_Book.top_main+CT_HD_Book.CONTENT_SPACE,CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+}
+void new_CT_HD_cancel()
+{
+	active_bar.cancel();
+}
+
+void new_CT_HD_save()
+{
+	ct_hoadon_error error;
+	Thongtin_CT pre_add;
+	cout<<"1????";
+	error = Check_CT_new(pre_add,CT_HD_new.List_content[0],CT_HD_new.List_content[1],CT_HD_new.List_content[2],CT_HD_new.List_content[3],Lap_HD_TT.List_content[4][0]);	
+	
+	if(error.check)
+	{
+		cout<<"1>>>>\n";
+		NodeCT* p = GetNode_CT(pre_add);
+		cout<<"2>>>>\n";
+		new_CT_HD_cancel();	
+		addTail_CT(ct_hd,p);
+		cout<<"3>>>>\n"<<CT_HD_Book.CURENT_PAGE<<endl;
+		CT_HD_Book.TOTAL_PAGE = ct_hd.num/5 +  (ct_hd.num%5!=0);
+		cout<<"ct hd totalpage:::"<<CT_HD_Book.TOTAL_PAGE<<endl;
+		cout<<"3>>>>\n"<<ct_hd.num<<endl;
+		CT_HD_Book.show();
+		Print_CT_HD(ct_hd,CT_HD_Book.left+5,CT_HD_Book.top_main+CT_HD_Book.CONTENT_SPACE,CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+		cout<<"4>>>>\n";
+		Lap_HD_final_OK.lock = true;
+		Lap_HD_final_OK.show();
+	}
+	else 
+	{
+		setbkcolor(getpixel(CT_HD_new.left,CT_HD_new.bottom+5));
+		setcolor(4);
+		settextstyle(DEFAULT_FONT, HORIZ_DIR,1);
+		setcolor(error.error_color[0]);
+		outtextxy(CT_HD_new.left+5,CT_HD_new.bottom+5,error.error_st[0]);
+		for(int i = 1; i<5;i++)
+		{
+			setcolor(error.error_color[i]);
+			outtextxy(CT_HD_new.left+CT_HD_new_c_Line[i-1],CT_HD_new.bottom+5,error.error_st[i]);
+		}
+	}
+}
+
+void add_Lap_HD_VT()
+{
+	if(Lap_HD_add_VT.lock == false) return;
+	active_bar.set_active();
+	//bar
+	setfillstyle(1,COLOR(128,128,255));
+	bar(m_f.left,m_f.bottom-130 , m_f.right, m_f.bottom);
+	CT_HD_new.free_Table();
+	CT_HD_new.show();
+	CT_HD_new_save.show();
+	CT_HD_new_cancel.show();
+	
+	
+}
+
+
+void Sync_VT(DsVattu &ds,char MaVT[],char loai,char sluong[]){
+	if(loai == 'N' || loai == 'n'){
+		int pos = bsearch(ds,MaVT);
+		cout<<"loai1::"<<loai<<endl;
+		int soluongton = Number(ds._vattu[pos].soluongton);
+		int soluongnhap = Number(sluong);
+		int soluongton_s = soluongnhap + soluongton;
+		char tam [100];
+		itoa(soluongton_s,tam,10);
+		strcpy(ds._vattu[pos].soluongton , tam);
+	}
+	else {
+		cout<<"loai2::"<<loai<<endl;
+		int pos = bsearch(ds,MaVT);
+		int soluongton = Number(ds._vattu[pos].soluongton);
+		int soluongxuat = Number(sluong);
+		int soluongton_s = soluongton - soluongxuat;
+		char tam [100];
+		itoa(soluongton_s,tam,10);
+		strcpy(ds._vattu[pos].soluongton , tam);
+	}
+}
+
+void Sync_VT_all(CT_HOADON ct,Thongtin_HD tt){
+	for(NodeCT* p = ct_hd.ctHead;p!=NULL;p = p->_next){
+		Sync_VT(DataVattu,p->thongtin.MAVT,tt.loai,p->thongtin.soluong);
+	}
+}
+void Lap_HD_final()
+{
+	if(Lap_HD_final_OK.lock == false ) return;
+	NodeHD* q_hd = new NodeHD;
+	q_hd->thongtin = tt;
+	q_hd->chitiet = ct_hd;
+	q_hd->_next = NULL;
+	Sync_VT_all(ct_hd,tt);
+	save_HD_to_NV(DataNhanvien._nhanvien,Lap_HD_TT.List_content[5],q_hd);
+	Lap_HD_Panel.cancel();
+}
+void return_search_HD()
+{
+	return_search_HD_TT.show();
+	return_search_CT_HD_Book.show();
+}
+void prev_return_search_CT_HD_Book()
+{
+	
+	return_search_CT_HD_Book.prev_PAGE();
+	return_search_CT_HD_Book.TOTAL_PAGE = ct_hd.num/5 +  (ct_hd.num%5!=0);
+	return_search_CT_HD_Book.show();
+	setbkcolor(15);
+	setcolor(0);
+	Print_CT_HD(ct_hd,return_search_CT_HD_Book.left+5,return_search_CT_HD_Book.top_main+return_search_CT_HD_Book.CONTENT_SPACE,return_search_CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+}
+void next_return_search_CT_HD_Book()
+{
+	
+	return_search_CT_HD_Book.next_PAGE();
+	return_search_CT_HD_Book.TOTAL_PAGE = ct_hd.num/5 +  (ct_hd.num%5!=0);
+	return_search_CT_HD_Book.show();
+	setbkcolor(15);
+	setcolor(0);
+	Print_CT_HD(ct_hd,return_search_CT_HD_Book.left+5,return_search_CT_HD_Book.top_main+return_search_CT_HD_Book.CONTENT_SPACE,return_search_CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+}
+void input_SHD()
+{
+	setbkcolor(search_HD_by_SHD.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	clearStream();
+	ScannerNum(search_HD_by_SHD.List_content[0],15,search_HD_by_SHD.left+5,(search_HD_by_SHD.top_main+search_HD_by_SHD.bottom-textheight("S"))/2,search_HD_by_SHD.List_content_ID[0]);
+		
+}
+
+void search_HD()
+{
+	init_ct(ct_hd);
+	Thongtin_HD tt_hd;
+	bool check = Find_HD_byNum(tt_hd,ct_hd,DataNhanvien._nhanvien,search_HD_by_SHD.List_content[0])	;
+	if(check){
+		Lap_HD_Panel.cancel();
+		Lap_HD_frame();
+		settextstyle(DEFAULT_FONT, HORIZ_DIR,3);
+		outtextxy((APP_LEFT+APP_RIGHT-8*3*17)/2,APP_TOP+45,"THONG TIN HOA DON\0");
+		return_search_HD();
+		search_HD_by_SHD_exit.show();
+		return_search_CT_HD_Book.TOTAL_PAGE = ct_hd.num/5 +  (ct_hd.num%5!=0);
+		return_search_CT_HD_Book.show();
+		cout<<"total page:::"<<return_search_CT_HD_Book.TOTAL_PAGE<<endl;
+		setbkcolor(15);
+		setcolor(0);
+		Print_thongtin_HD(tt_hd,return_search_HD_TT.left+5,return_search_HD_TT.top_main+10,Lap_HD_TT_c_Line);
+		Print_CT_HD(ct_hd,return_search_CT_HD_Book.left+5,return_search_CT_HD_Book.top_main+return_search_CT_HD_Book.CONTENT_SPACE,return_search_CT_HD_Book.CURENT_PAGE,CT_HD_c_Line);
+		
+	}
+	else {
+		setbkcolor(COLOR(200,230,251));
+		setcolor(4);
+		outtextxy(search_HD_by_SHD.left+5,search_HD_by_SHD.bottom+10,"Khong tim thay\0");
+	}
+}
+
+void Print_HD_by_SHD()
+{
+	Lap_HD_frame();
+	setfillstyle(1,COLOR(200,230,251));
+	bar((APP_RIGHT+APP_LEFT-600)/2,APP_TOP+200,(APP_RIGHT+APP_LEFT+600)/2,APP_TOP+350);
+	search_HD_by_SHD.free_Table();
+	search_HD_by_SHD.show();
+	search_HD_by_SHD_OK.show();
+	search_HD_by_SHD_exit.show();
+}
 void Show_HD ()
 {
 	init_R();
@@ -1131,19 +1377,99 @@ void Show_HD ()
 	menu_slash("Hoa don");
 	
 	Lap_HD_Button.show();
-	
+	Print_HD_by_SHD_button.show();
 	cout <<"hoa don page open" <<endl; // Delete this line when release!!!
 }
-
-void Show_Dic()
+void Top_E_Begin_Ngay()
 {
-	cout <<"dictionary show" <<endl;
-	Dic_Dialog.show();
+	setbkcolor(Top_E_Begin.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_Begin.font_size);
+	clearStream();
+	ScannerNum(Top_E_Begin.List_content[0],2,Top_E_Begin.left+5,(Top_E_Begin.top_main+Top_E_Begin.bottom-textheight("S"))/2,Top_E_Begin.List_content_ID[0]);
 }
-void Cancel_Dic()
+void Top_E_Begin_Thang()
 {
-	cout <<"dictionary cancel" <<endl;
-	Dic_Dialog.cancel();
+	setbkcolor(Top_E_Begin.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_Begin.font_size);
+	clearStream();
+	ScannerNum(Top_E_Begin.List_content[1],2,Top_E_Begin.left+Top_E_Begin.column[0]+5,(Top_E_Begin.top_main+Top_E_Begin.bottom-textheight("S"))/2,Top_E_Begin.List_content_ID[1]);
+}
+void Top_E_Begin_Nam()
+{
+	setbkcolor(Top_E_Begin.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_Begin.font_size);
+	clearStream();
+	ScannerNum(Top_E_Begin.List_content[2],4,Top_E_Begin.left+Top_E_Begin.column[1]+5,(Top_E_Begin.top_main+Top_E_Begin.bottom-textheight("S"))/2,Top_E_Begin.List_content_ID[2]);
+}
+void Top_E_End_Ngay()
+{
+	setbkcolor(Top_E_End.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_End.font_size);
+	clearStream();
+	ScannerNum(Top_E_End.List_content[0],2,Top_E_End.left+5,(Top_E_End.top_main+Top_E_End.bottom-textheight("S"))/2,Top_E_End.List_content_ID[0]);
+}
+
+void Top_E_End_Thang()
+{
+	setbkcolor(Top_E_End.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_End.font_size);
+	clearStream();
+	ScannerNum(Top_E_End.List_content[1],2,Top_E_End.left+Top_E_End.column[0]+5,(Top_E_End.top_main+Top_E_End.bottom-textheight("S"))/2,Top_E_End.List_content_ID[1]);
+}
+void Top_E_End_Nam()
+{
+	setbkcolor(Top_E_End.color);
+	setcolor(0);//BLACK
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,Top_E_End.font_size);
+	clearStream();
+	ScannerNum(Top_E_End.List_content[2],4,Top_E_End.left+Top_E_End.column[1]+5,(Top_E_End.top_main+Top_E_End.bottom-textheight("S"))/2,Top_E_End.List_content_ID[2]);
+}
+void Top_E_Print()
+{
+	day_error error;
+	int Num1,Num2;
+	
+	error = Check_day(Num1,Top_E_Begin.List_content[0],Top_E_Begin.List_content[1],Top_E_Begin.List_content[2],Num2,Top_E_End.List_content[0],Top_E_End.List_content[1],Top_E_End.List_content[2]);
+	if(error.check)
+	{
+		DsExport_top Top_E_ds;
+		Top_E_ds = Top_Export(DataVattu,Num1,Num2);
+		Top_E_Book.show();
+		Print_top(Top_E_ds,Top_E_Book.left+5,Top_E_Book.top_main+10,Top_E_Book_c_line);
+		Top_E_exit.show();
+	}
+	else{
+		setcolor(4);
+		setbkcolor(COLOR(200,230,251));
+		outtextxy(Top_E_Begin.left+5,Top_E_Begin.bottom+10,error.error_st[0]);
+		outtextxy(Top_E_End.left+5,Top_E_End.bottom+10,error.error_st[1]);
+	}
+}
+void show_TOP_10_VT()
+{
+	init_R();
+	CURRENT_STRAGE = 400;
+	main_frame();
+	menu_slash("TOP 10 VT");
+	Top_E_Begin.free_Table();
+	Top_E_End.free_Table();
+	setfillstyle(1,COLOR(200,230,251));
+	bar(129,200,1254,397);
+	setbkcolor(COLOR(200,230,251));
+	setcolor(4);
+	settextstyle(DEFAULT_FONT, HORIZ_DIR,2);
+	outtextxy(Top_E_Begin.left-117,(Top_E_Begin.top_main+Top_E_Begin.bottom-16)/2,"BAT DAU\0");
+	outtextxy(Top_E_End.left- 133,(Top_E_Begin.top_main+Top_E_Begin.bottom-16)/2,"KET THUC\0");
+	Top_E_Begin.show();
+	Top_E_End.show();
+	Top_E_OK.show();
+	
+	cout <<"TOP 10 VT page open" <<endl; // Delete this line when release!!!
 }
 
 void GUI_Init()
@@ -1161,7 +1487,7 @@ void GUI_Init()
 	Menu_Tab.List_content_ID[1] = VT_ID;
 	Menu_Tab.List_content_ID[2] = NV_ID;
 	Menu_Tab.List_content_ID[3] = HD_ID;
-	Menu_Tab.List_content_ID[4] = Dic_Dialog.ID;
+	Menu_Tab.List_content_ID[4] = TOP_10_VT_ID;
 		
 	/*Vattu ID*/
 	F_R[VT_ID]=Show_VT;
@@ -1270,12 +1596,53 @@ void GUI_Init()
 	F_R[Lap_HD_TT.List_content_ID[4]] = Lap_HD_Loai;
 	Lap_HD_TT.List_content_ID[5] = 308;
 	F_R[Lap_HD_TT.List_content_ID[5]] =  Lap_HD_TT_MaNV;
-	F_R[Lap_HD_cancel.ID] = Show_HD;
+	F_R[Lap_HD_final_OK.ID]= Lap_HD_final; //309
+	F_R[Lap_HD_add_VT.ID] = add_Lap_HD_VT;//310
+	F_R[Lap_HD_cancel.ID] = Show_HD;//311
 	
+	CT_HD_new.List_content_ID[0] = 312;
+	F_R[CT_HD_new.List_content_ID[0]] =  new_CT_HD_MVT;
+	CT_HD_new.List_content_ID[1] = 313;
+	F_R[CT_HD_new.List_content_ID[1]] = new_CT_HD_SL;
+	CT_HD_new.List_content_ID[2] = 314;
+	F_R[CT_HD_new.List_content_ID[2]] = new_CT_HD_DG;
+	CT_HD_new.List_content_ID[3] = 315;
+	F_R[CT_HD_new.List_content_ID[3]] = new_CT_HD_VAT;
+	F_R[CT_HD_new_save.ID] = new_CT_HD_save;//316
+	F_R[CT_HD_new_cancel.ID] = new_CT_HD_cancel;//317
+	CT_HD_Book.prev_ID = 318;
+	F_R[CT_HD_Book.prev_ID] = prev_CT_HD_Book;
+	CT_HD_Book.next_ID = 319;
+	for(int i = 0; i<5;i++)
+	CT_HD_Book.List_content_ID[i]= 0;
+	F_R[CT_HD_Book.next_ID] = next_CT_HD_Book;
+	F_R[Print_HD_by_SHD_button.ID] = Print_HD_by_SHD; //330
+	F_R[search_HD_by_SHD_OK.ID] = search_HD; //331
+	search_HD_by_SHD.List_content_ID[0] = 332;
+	F_R[search_HD_by_SHD.List_content_ID[0]]= input_SHD;
+	return_search_CT_HD_Book.prev_ID = 333;
+	F_R[return_search_CT_HD_Book.prev_ID] = prev_return_search_CT_HD_Book;
+	return_search_CT_HD_Book.next_ID = 334;
+	F_R[return_search_CT_HD_Book.next_ID] = next_return_search_CT_HD_Book;
 	/*Dic ID*/
-
-	F_R[Dic_Dialog.ID]=Show_Dic;
-	F_R[Dic_Dialog.cID]=Cancel_Dic;
+	F_R[TOP_10_VT_ID] = show_TOP_10_VT;
+	
+	Top_E_Begin.List_content_ID[0] = 401;
+	F_R[Top_E_Begin.List_content_ID[0]] = Top_E_Begin_Ngay;
+	
+	Top_E_Begin.List_content_ID[1] = 402;
+	F_R[Top_E_Begin.List_content_ID[1]] = Top_E_Begin_Thang;
+	Top_E_Begin.List_content_ID[2] = 403;
+	F_R[Top_E_Begin.List_content_ID[2]] = Top_E_Begin_Nam;
+	
+	Top_E_End.List_content_ID[0] =  404;
+	F_R[Top_E_End.List_content_ID[0]] = Top_E_End_Ngay;
+	Top_E_End.List_content_ID[1] =  405;
+	F_R[Top_E_End.List_content_ID[1]] =  Top_E_End_Thang;
+	Top_E_End.List_content_ID[2] =  406;	
+	F_R[Top_E_End.List_content_ID[2]] = Top_E_End_Nam;
+	F_R[Top_E_OK.ID] = Top_E_Print;
+	
 	/*main menu init*/
 	Menu_Tab.line_color = COLOR(200,200,200);
 	/*Vat Tu init*/

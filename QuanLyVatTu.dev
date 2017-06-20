@@ -29,24 +29,24 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=3
 CompilerSettings=00000001g0000000001000000
-UnitCount=8
+UnitCount=9
 
 [VersionInfo]
 Major=2
 Minor=0
 Release=2
-Build=1932
+Build=2325
 LanguageID=2057
 CharsetID=1252
 CompanyName=
-FileVersion=2.0.2.1932
+FileVersion=2.0.2.2325
 FileDescription=Developed using the Dev-C++ IDE
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=
-ProductVersion=2.0.2.1932
+ProductVersion=2.0.2.2325
 AutoIncBuildNr=1
 SyncProduct=1
 
@@ -122,6 +122,16 @@ BuildCmd=
 
 [Unit7]
 FileName=Data\HOADON.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=Data\topexport.h
 CompileCpp=1
 Folder=
 Compile=1

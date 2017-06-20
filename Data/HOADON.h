@@ -13,10 +13,12 @@ struct NodeHD{
 	NodeHD* _next;
 };
 struct DsHOADON{
+	int num;
 	NodeHD* hdHead;
 };
 void init_hd(DsHOADON &hd){
 	hd.hdHead = NULL;
+	hd.num =0;
 }
 NodeHD* GetNode_hd(Thongtin_HD tt,CT_HOADON ct){
 	NodeHD* p;
@@ -36,15 +38,16 @@ void addTail_HD(DsHOADON &hd,NodeHD* p){
 			else q = q->_next;
 		}
 	}
+	hd.num++;
 }
 #define CTHEAD hd.hdHead->chitiet.ctHead
 void DeleteHD(DsHOADON &hd,char maVT[]){
-	if(strcmp(CTHEAD -> MAVT , maVT)==0){
+	if(strcmp(CTHEAD -> thongtin.MAVT , maVT)==0){
 		CTHEAD = CTHEAD->_next;
 	}
 	else{
 		for(NodeCT* p = CTHEAD ;p!=NULL ; p = p->_next){
-			if(strcmp(p->_next->MAVT , maVT)==0){
+			if(strcmp(p->_next->thongtin.MAVT , maVT)==0){
 				NodeCT* q = new NodeCT;
 				q = p->_next;
 				p->_next = q->_next;
@@ -54,4 +57,12 @@ void DeleteHD(DsHOADON &hd,char maVT[]){
 		}
 	}
 }
-
+void Print_thongtin_HD(Thongtin_HD tt,int x ,int y,unsigned short int c_line[]){
+	outtextxy(x,y,tt.soHD);
+	outtextxy(x+c_line[0],y,tt.day);
+	outtextxy(x+c_line[1],y,tt.month);
+	outtextxy(x+c_line[2],y,tt.year);
+	char loai_s [1];
+	loai_s[0] = tt.loai;
+	outtextxy(x+c_line[3],y,loai_s);
+}

@@ -144,6 +144,7 @@ void PrintNhanvien(Tree root, int page,int x,int y,unsigned short int c_line[]){
 //		addNhanvien(DataNhanvien._nhanvien,k);
 //	}
 //}
+
 void Find_NV_Return(Tree root, int k,Nhanvien &get){
 	if(root == NULL) return;
 	Find_NV_Return(root->left,k,get);
@@ -197,6 +198,7 @@ void delKey(Tree &t, char MaNV[])     // xoa nut co key x
 	}
    
 }
+
 //void Delete_NV(Tree &root,int n){
 //	 i = 1;
 //	Nhanvien p;
@@ -211,16 +213,83 @@ void initdataNhanvien(){
 	bool check = false;
 	if(f)
 	while(!f.eof()){
-		Nhanvien p;
+		Thongtin_NV p;
 		check = true;
 		f.read((char*)&p,sizeof(p));
 		//cout<<"Nhanvien:::"<<p.MANV<<endl;
-		s = p.thongtin.MANV;
-		addNhanvien(DataNhanvien._nhanvien,p);
+		s = p.MANV;
+		Nhanvien q;
+		q.thongtin = p;
+		addNhanvien(DataNhanvien._nhanvien,q);
 	}
 	else init_nv(DataNhanvien._nhanvien);
 	delKey(DataNhanvien._nhanvien,s);
 
 	f.close();
+}
+bool Find_HD_byNum(Thongtin_HD &tt,CT_HOADON &ds,Tree t, char soHD[]){
+	if(t == NULL ) return false;
+	else{
+		for(NodeHD* p = t->nv.nv_HOADON.hdHead ; p!=NULL; p = p->_next){
+			if(strcmp(soHD,p->thongtin.soHD)==0) {
+				tt = p->thongtin;
+				ds = p->chitiet;
+				return true;
+			}
+		}
+		return (Find_HD_byNum (tt,ds,t->left,soHD)| Find_HD_byNum(tt,ds,t->right,soHD)); 
+	}
+}
+void save_HD_to_NV(Tree &t, char MaNV[],NodeHD* p){
+	if(t==NULL) return;
+	if(strcmp(t->nv.thongtin.MANV,MaNV)==0){
+		addTail_HD(t->nv.nv_HOADON,p);
+	}
+	if(strcmp(t->nv.thongtin.MANV,MaNV)>0) save_HD_to_NV(t->left,MaNV,p);
+	if(strcmp(t->nv.thongtin.MANV,MaNV)<0) save_HD_to_NV(t->right,MaNV,p);
+}
+int Num_day(char ngay[], char thang[],char nam[]){
+	int ans =0;
+	if(strlen(ngay)==1) {
+	ngay[1] = ngay[0];
+	ngay[0] = '0';
+	}
+	if(strlen(thang)==1) {
+	thang[1] = thang[0];
+	thang[0] = '0';
+	}
+	int dis = 4-strlen(nam);
+	for(int i=3;i>=dis;i--){
+		nam [i] = nam [i-dis];
+	}
+	for(int i =0;i<dis;i++) nam[i] = '0';
+	for(int i=0;i<strlen(nam);i++) ans= ans*10 + nam[i]; 
+	for(int i=0;i<strlen(thang);i++) ans= ans*10 + thang[i]; 
+	for(int i=0;i<strlen(ngay);i++) ans= ans*10 + ngay[i]; 
+	return ans;
+}
+NodeNV* Find_HD_thongke (Tree t,int begin,int end){
+	NodeNV* give = new NodeNV; 
+	for(NodeHD* p = t->nv.nv_HOADON.hdHead;p!=NULL;p = p->_next){
+		int num = Num_day(p->thongtin.day,p->thongtin.month,p->thongtin.year);
+		if(num>=begin && num<=end){
+			addTail_HD(give->nv.nv_HOADON,p);
+		}
+	}
+	return give;
+}
+void Find_NV_thongke (Tree &ds,Tree t,int begin, int end){
+	if(t == NULL ) return;
+	NodeNV* p = new NodeNV;
+	p = Find_HD_thongke(t,begin,end);
+	if(p->nv.nv_HOADON.hdHead !=NULL) Insert_NV(p,ds);
+	 Find_NV_thongke(ds,t->left,begin,end);
+	 Find_NV_thongke(ds,t->right,begin,end);
+}
+DsNhanvien Thongke_HD(Tree t,int begin,int end){
+	DsNhanvien ds_nv;
+	init_nv(ds_nv._nhanvien);
+	Find_NV_thongke(ds_nv._nhanvien,t,begin,end);
+	return ds_nv;
 }
 

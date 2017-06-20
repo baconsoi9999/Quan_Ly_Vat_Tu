@@ -41,6 +41,12 @@ void  notthing()
 {
 	cout << "Do not thing" <<endl;
 }
+void Debug_ID(int ID)
+{
+	for(unsigned int i=0; i<=SCREAN_H;i++)
+	for(unsigned int j=0; j<=SCREAN_W;j++)
+	if(R[i][j]==ID) putpixel(j,i,4); 
+}
 //void newconsole()
 //{
 //CConsoleLogger another_console;
@@ -393,7 +399,7 @@ struct Panel
 		right = r;
 		bottom = b;
 	};
-	set_active()
+	void set_active()
 	{
 		is_active = true;
 		/*set backup ID */
@@ -420,22 +426,20 @@ struct Panel
 	void cancel()
 	{
 		is_active = false;
-			/*set Image back */
-		putimage(Panel::left, Panel::top, bitmap, 0);
+		int y;
+		int x;
+		int y2;
+		int x2;
+		/*set backup ID */
+		putimage(left, top, bitmap, 0);
 		free(bitmap);
-		/*set backup ID back */
-	
-		int y2=0;
-		int x2=0;
-		for (int y = Panel::top; y <= Panel::bottom; y++)
+		for (y = top, y2 = 0; y <= bottom; y++, y2++)
 		{
-			for (int x = Panel::left; x <= Panel::right; x++)
+			for (x = left, x2 = 0; x <= right; x++, x2++)
 			{
 				R[y][x] = B_R[y2][x2];
-				x2++;
 			}
-			y2++;
-		}
+		};
 		cout <<"Panel cancel" <<endl; // Delete this line when release!!!
 	};
 };
@@ -527,35 +531,29 @@ struct Tab_List
 			outtextxy(Tab_List::left+ 10 , top+ CONTENT_SPACE + i*(font_size*8+ CONTENT_SPACE*2+1), List_content_tile[i]);
 			
 		}
-		cout <<"Tap_List Open" <<endl <<"bottom: " << bottom <<endl; // Delete this line when release!!!
-		
+		cout <<"Tap_List Open" <<endl <<"bottom: " << bottom <<endl; // Delete this line when release!!!	
 	}
 	
-	
 	void cancel()
-	{
-		
+	{	
 		/*set Image back */
 		putimage(left, top, bitmap, 0);
 		free(bitmap);
 		/*set backup ID back */
-	
-		int y2=0;
-		int x2=0;
-		for (int y = top; y <= bottom; y++)
+		int y;
+		int x;
+		int y2;
+		int x2;
+		for (y = top, y2 = 0; y <= bottom; y++, y2++)
 		{
-			for (int x = left; x <= right; x++)
+			for (x = left, x2 = 0; x <= right; x++, x2++)
 			{
-				R[y][x] = B_R[y2][x2];
-				x2++;
+				R[y][x]=B_R[y2][x2];
 			}
-			y2++;
 		}
 		cout <<"Tap_List Cancel" <<endl; // Delete this line when release!!!
 	};
-//10:26-12/5/2017 Delete is_content_click() method	
-
-	
+//10:26-12/5/2017 Delete is_content_click() method		
 };
 struct Dialog
 {
@@ -876,7 +874,7 @@ struct Array_Table
 		int x2;
 		for (y = top, y2 = 0; y <= bottom; y++, y2++)
 		{
-			for (x = left, x2 = 0; x <= right; x++, x2++)
+			for (x = Array_Table::left, x2 = 0; x <=Array_Table::right; x++, x2++)
 			{
 				B_R[y2][x2]=R[y][x];
 			}
@@ -884,17 +882,31 @@ struct Array_Table
 		/*first column*/
 	
 		for(int i = top_main; i<bottom;i++)
-			for(int j =left+1; j<left+column[0]-1;j++) 
+			for(int j =Array_Table::left+1; j<Array_Table::left+column[0]-1;j++) 
+			{
 			R[i][j]=List_content_ID[0];
-	 
+	 	//	putpixel(j,i,4);
+			}
 		for(int n= 0; n<NUMBER_OF_COLUMN-1; n++)
 			for(int i = top_main; i<bottom;i++)
-			for(int j = left+column[n]+1; j<left+column[n+1]-1;j++) 
+			for(int j = Array_Table::left+column[n]+1; j<Array_Table::left+column[n+1]-1;j++) 
+			{
 			R[i][j]=List_content_ID[n+1];
-					
+		//	putpixel(j,i,4);
+			}
 		for(int i = top_main; i<bottom;i++)
-			for(int j =left+column[NUMBER_OF_COLUMN-2]+1; j<right-1;j++) 
-			R[i][j]=List_content_ID[NUMBER_OF_COLUMN-1];			
+			for(int j =Array_Table::left+column[NUMBER_OF_COLUMN-2]+1; j<Array_Table::right-1;j++) 
+			{
+			R[i][j]=List_content_ID[NUMBER_OF_COLUMN-1];
+		//	putpixel(j,i,4);
+			}			
+		if(NUMBER_OF_COLUMN==1)
+			for(int i = top_main; i<bottom;i++)
+			for(int j =Array_Table::left+1; j<Array_Table::right-1;j++) 
+			{
+			R[i][j]=List_content_ID[0];
+		//	putpixel(j,i,4);
+			}
 	}
 	void show()
 	{
@@ -925,6 +937,8 @@ struct Array_Table
 		for(int i=1;i<NUMBER_OF_COLUMN;i++)
 			line(left+column[i-1],top+1,left+column[i-1],bottom-1);
 		rectangle(left, top, right-1, bottom-1);
+		
+		
 	}
 	void cancel()
 	{
@@ -935,7 +949,7 @@ struct Array_Table
 		int x2=0;
 		for (int y = top; y <= bottom; y++)
 		{
-			for (int x = left; x <= right; x++)
+			for (int x = Array_Table::left; x <=Array_Table::right; x++)
 			{
 				R[y][x] = B_R[y2][x2];
 				x2++;

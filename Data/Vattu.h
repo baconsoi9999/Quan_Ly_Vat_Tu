@@ -54,12 +54,12 @@ void Insert(DsVattu &ds,int pos,Vattu vt )
 	ds._vattu[pos] = vt;
 	ds.num ++;
 }
-int Find_VT(DsVattu &ds, char p[])
+bool Find_VT(DsVattu &ds, char p[])
 {
 	for(int i = 0;i < ds.num; i++){
-		if(strcmp(ds._vattu[i].MAVT , p)==0) return i;
+		if(strcmp(ds._vattu[i].MAVT , p)==0) return true;
 	}
-	return 0;
+	return false;
 } 
 void FindandInsert(DsVattu &ds,Vattu vt)
 {
@@ -89,6 +89,7 @@ int Find_VT_return(DsVattu &ds,char *MaVT){
 	}
 	return 0;
 }
+
 //Vattu addVattu()
 //{
 //	Vattu Va;
